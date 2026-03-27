@@ -5,8 +5,9 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { ethers } from "ethers";
 import { getWriteContract } from "@/lib/blockchain";
-import { FaPlus, FaUniversity, FaFileAlt, FaCheckCircle, FaExternalLinkAlt, FaSearch } from "react-icons/fa";
+import { FaPlus, FaUniversity, FaFileAlt, FaCheckCircle, FaExternalLinkAlt, FaSearch, FaTrash } from "react-icons/fa";
 import Link from "next/link";
+import ConfirmModal from "@/components/ConfirmModal";
 
 interface Institution {
   id: string;
@@ -37,6 +38,8 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [tab, setTab] = useState<"certs" | "institutions">("certs");
+  const [deleteTarget, setDeleteTarget] = useState<{ type: "institution" | "certificate"; id: string; name: string } | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -52,6 +55,29 @@ export default function DashboardPage() {
       setCertificates(certRes.data);
     } catch {
       toast.error("Failed to load data");
+    }
+  }
+
+  async function handleDelete() {
+    if (!deleteTarget) return;
+    setDeleting(true);
+    try {
+      const endpoint =
+        deleteTarget.type === "institution"
+          ? `/api/institutions/${deleteTarget.id}`
+          : `/api/certificates/${deleteTarget.id}`;
+      await axios.delete(endpoint);
+      toast.success(
+        deleteTarget.type === "institution"
+          ? "Institution deleted successfully"
+          : "Certificate deleted successfully"
+      );
+      fetchData();
+    } catch (err: any) {
+      toast.error(err?.response?.data?.error || "Delete failed");
+    } finally {
+      setDeleting(false);
+      setDeleteTarget(null);
     }
   }
 
@@ -273,6 +299,15 @@ export default function DashboardPage() {
                                   <FaExternalLinkAlt className="text-xs" />
                                 </a>
                               )}
+                              <button
+                                onClick={() =>
+                                  setDeleteTarget({ type: "certificate", id: cert.id, name: `${cert.studentName} — ${cert.courseName}` })
+                                }
+                                className="text-red-500 hover:text-red-700 p-1.5 rounded-lg hover:bg-red-50 transition-colors"
+                                title="Delete certificate"
+                              >
+                                <FaTrash className="text-xs" />
+                              </button>
                             </div>
                           </td>
                         </tr>
@@ -312,6 +347,13 @@ export default function DashboardPage() {
                         <p className="text-sm text-gray-500 mt-0.5">{inst.email}</p>
                         <p className="text-xs text-gray-400 break-all mt-2 font-mono bg-gray-50 px-2 py-1 rounded-lg">{inst.walletAddr}</p>
                       </div>
+                      <button
+                        onClick={() => setDeleteTarget({ type: "institution", id: inst.id, name: inst.name })}
+                        className="text-gray-300 hover:text-red-500 p-1.5 rounded-lg hover:bg-red-50 transition-colors opacity-0 group-hover:opacity-100"
+                        title="Delete institution"
+                      >
+                        <FaTrash className="text-sm" />
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -320,6 +362,24 @@ export default function DashboardPage() {
           </section>
         )}
       </div>
+
+      {/* Delete confirmation modal */}
+      <ConfirmModal
+        open={!!deleteTarget}
+        title={
+          deleteTarget?.type === "institution"
+            ? "Delete Institution"
+            : "Delete Certificate"
+        }
+        message={
+          deleteTarget?.type === "institution"
+            ? `Are you sure you want to delete "${deleteTarget?.name}"? All certificates belonging to this institution will also be removed from the database.`
+            : `Are you sure you want to delete the certificate for "${deleteTarget?.name}"? This will only remove the database record, not the blockchain entry.`
+        }
+        loading={deleting}
+        onConfirm={handleDelete}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   );
 }

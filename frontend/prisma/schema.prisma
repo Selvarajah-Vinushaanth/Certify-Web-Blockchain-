@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Models ───────────────────────────────────────────────────────────
+
+model Institution {
+  id          String        @id @default(cuid())
+  name        String
+  walletAddr  String        @unique
+  email       String        @unique
+  createdAt   DateTime      @default(now())
+  certificates Certificate[]
+}
+
+model Certificate {
+  id              String      @id @default(cuid())
+  certId          String      @unique          // on-chain certificate ID (bytes32 hex)
+  certHash        String                        // keccak256 of file
+  ipfsCid         String                        // IPFS CID
+  studentName     String
+  studentEmail    String?
+  courseName      String
+  recipientAddr   String                        // student wallet address
+  issuerAddr      String                        // institution wallet address
+  txHash          String?                       // transaction hash
+  status          CertStatus  @default(ACTIVE)
+  issuedAt        DateTime    @default(now())
+  institution     Institution @relation(fields: [institutionId], references: [id])
+  institutionId   String
+}
+
+model VerificationLog {
+  id          String   @id @default(cuid())
+  certId      String
+  verifierIp  String?
+  verifiedAt  DateTime @default(now())
+  result      Boolean
+}
+
+enum CertStatus {
+  ACTIVE
+  REVOKED
+}

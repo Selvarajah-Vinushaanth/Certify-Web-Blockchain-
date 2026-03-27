@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CertChain – How It Works</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 850px; margin: 40px auto; padding: 20px; color: #222; }
+    h1 { color: #3b3bb3; border-bottom: 3px solid #3b3bb3; padding-bottom: 10px; }
+    h2 { color: #3b3bb3; margin-top: 40px; }
+    h3 { color: #555; margin-top: 25px; }
+    pre { background: #f4f4f4; border-left: 4px solid #3b3bb3; padding: 15px; border-radius: 4px; font-size: 13px; white-space: pre-wrap; }
+    table { border-collapse: collapse; width: 100%; margin: 15px 0; }
+    th { background: #3b3bb3; color: white; padding: 10px; text-align: left; }
+    td { border: 1px solid #ddd; padding: 10px; }
+    tr:nth-child(even) { background: #f9f9f9; }
+    .correct { color: green; font-weight: bold; }
+    .wrong { color: red; font-weight: bold; }
+    .step { background: #eef; border-left: 5px solid #3b3bb3; padding: 12px 15px; margin: 15px 0; border-radius: 4px; }
+    .step-number { font-size: 20px; font-weight: bold; color: #3b3bb3; }
+    .arrow { text-align: center; font-size: 22px; color: #3b3bb3; margin: 5px 0; }
+    footer { margin-top: 60px; text-align: center; color: #aaa; font-size: 12px; border-top: 1px solid #eee; padding-top: 15px; }
+  </style>
+</head>
+<body>
+
+<h1>CertChain — How It Works</h1>
+<p><strong>Project:</strong> Blockchain-based Certificate Verification System<br/>
+<strong>Date:</strong> March 27, 2026</p>
+
+<!-- ───────────────────────────── -->
+<h2>1. The 4 Components</h2>
+
+<table>
+  <tr><th>Component</th><th>What It Does</th><th>Where It Runs</th></tr>
+  <tr><td><strong>Next.js Frontend</strong></td><td>The website UI at localhost:3000</td><td>Your PC</td></tr>
+  <tr><td><strong>Hardhat Local</strong></td><td>Fake blockchain for testing</td><td>localhost:8545 on your PC</td></tr>
+  <tr><td><strong>MetaMask</strong></td><td>Your wallet — signs transactions</td><td>Browser extension</td></tr>
+  <tr><td><strong>Pinata (IPFS)</strong></td><td>Permanent cloud storage for PDFs</td><td>pinata.cloud (internet)</td></tr>
+  <tr><td><strong>PostgreSQL</strong></td><td>Database for searchable records</td><td>localhost:5432 on your PC</td></tr>
+</table>
+
+<!-- ───────────────────────────── -->
+<h2>2. Issuing a Certificate — Step by Step</h2>
+
+<div class="step">
+  <span class="step-number">Step 1 — Fill the Form (Next.js Frontend)</span>
+  <pre>
+You enter:
+  - Student Name
+  - Student Email
+  - Course / Degree
+  - Student Wallet Address  ← recipient identity (public address)
+  - Upload PDF file
+
+Click: "Issue Certificate"
+  </pre>
+</div>
+<div class="arrow">↓</div>
+
+<div class="step">
+  <span class="step-number">Step 2 — Next.js API processes the request</span>
+  <pre>
+File: src/app/api/certificates/route.ts
+
+  1. Reads PDF as raw bytes
+  2. Hashes the PDF:
+       certHash = keccak256(pdf_bytes) = 0x3f7a9b...
+       (unique 32-byte fingerprint — changes if PDF is edited even 1 bit)
+  3. Sends PDF to Pinata API
+  </pre>
+</div>
+<div class="arrow">↓</div>
+
+<div class="step">
+  <span class="step-number">Step 3 — Pinata (IPFS) stores the PDF</span>
+  <pre>
+PDF uploaded to Pinata's servers (permanent IPFS storage)
+
+Pinata returns:
+  CID = "QmXyz123abc..."
+
+CID = Content Identifier — permanent address to the file
+  - Same file always gives same CID
+  - File can never be deleted from IPFS
+  - Accessible at: gateway.pinata.cloud/ipfs/QmXyz123abc...
+
+NOTE: CID is NOT a cache — it is a PERMANENT link.
+  </pre>
+</div>
+<div class="arrow">↓</div>
+
+<div class="step">
+  <span class="step-number">Step 4 — PostgreSQL saves a pending record</span>
+  <pre>
+Database saves:
+  {
+    certId:       "pending-1234-xyz"  ← temporary placeholder
+    certHash:     "0x3f7a9b..."
+    ipfsCid:      "QmXyz123..."
+    studentName:  "Vinushaanth"
+    courseName:   "CSE"
+    recipientAddr:"0x70997..."        ← student wallet
+    issuerAddr:   "0xf39Fd6..."       ← your wallet
+    status:       ACTIVE
+  }
+
+Why save now?
+  → IPFS upload already happened (can't undo)
+  → Need a record even if blockchain step fails
+  → certId will be updated after blockchain confirms
+  </pre>
+</div>
+<div class="arrow">↓</div>
+
+<div class="step">
+  <span class="step-number">Step 5 — MetaMask signs the transaction</span>
+  <pre>
+Frontend calls the Smart Contract function via MetaMask:
+  contract.issueCertificate(certHash, CID, studentWallet, name, course)
+
+MetaMask pops up showing:
+  - Function being called
+  - Network: Hardhat Local  ← MUST be this (not Ethereum Mainnet)
+  - Gas fee (small amount of test ETH)
+
+You click CONFIRM →
+  MetaMask uses your PRIVATE KEY to sign:
+    signature = ECDSA.sign(transactionHash, privateKey)
+
+Private key NEVER leaves MetaMask — signing happens internally.
+The signature proves: "I, the owner of this wallet, authorized this."
+  </pre>
+</div>
+<div class="arrow">↓</div>
+
+<div class="step">
+  <span class="step-number">Step 6 — Hardhat Blockchain processes the transaction</span>
+  <pre>
+Hardhat (localhost:8545) receives the signed transaction:
+
+  1. VERIFIES SIGNATURE:
+       recoveredAddress = ECDSA.recover(txHash, signature)
+       → Proves transaction was signed by 0xf39Fd6...
+
+  2. CHECKS AUTHORIZATION:
+       require(authorisedIssuers[msg.sender] == true)
+       → Only registered issuers can issue certificates
+
+  3. GENERATES CERTIFICATE ID:
+       certId = keccak256(certHash + issuerAddress + timestamp)
+       = 0x6748e1466c...
+
+  4. STORES PERMANENTLY ON BLOCKCHAIN:
+       certificates[certId] = {
+         certHash, ipfsCid, issuer, recipient,
+         studentName, courseName, issuedAt, valid: true
+       }
+       → Cannot be edited or deleted EVER
+
+  5. RETURNS: certId + transactionHash to frontend
+  </pre>
+</div>
+<div class="arrow">↓</div>
+
+<div class="step">
+  <span class="step-number">Step 7 — PostgreSQL updated with real Certificate ID</span>
+  <pre>
+Frontend receives certId from blockchain
+
+Calls PATCH /api/certificates/{id}:
+  certId:  "pending-1234-xyz" → "0x6748e1466c..."
+  txHash:  "0xb204bc3d..."
+
+Database now has the complete, real record.
+Dashboard shows the real Certificate ID.
+
+DONE ✓
+  </pre>
+</div>
+
+<!-- ───────────────────────────── -->
+<h2>3. Sequential Component Order</h2>
+
+<pre>
+issue/page.tsx  (you fill form, click submit)
+      ↓
+/api/certificates  (Next.js API — hashes PDF, calls Pinata)
+      ↓
+Pinata Cloud  →  stores PDF, returns CID
+      ↓
+PostgreSQL  →  saves pending record
+      ↓
+Back to browser (issue/page.tsx)
+      ↓
+MetaMask  →  you confirm, signs with private key
+      ↓
+Hardhat Local  →  verifies, runs smart contract, generates certId
+      ↓
+/api/certificates/[id]  (Next.js API — updates DB)
+      ↓
+PostgreSQL  →  certId updated to real 0x6748e1...
+</pre>
+
+<!-- ───────────────────────────── -->
+<h2>4. Private Key vs Public Key</h2>
+
+<table>
+  <tr><th></th><th>Public Key (Wallet Address)</th><th>Private Key</th></tr>
+  <tr><td><strong>Example</strong></td><td>0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266</td><td>0xac0974bec39a17e36ba4...</td></tr>
+  <tr><td><strong>What it is</strong></td><td>Your identity / username on blockchain</td><td>Your password / signature stamp</td></tr>
+  <tr><td><strong>Who sees it</strong></td><td>Everyone — it's public</td><td>Only you — NEVER share</td></tr>
+  <tr><td><strong>Used for</strong></td><td>Identifying issuer and recipient</td><td>Signing transactions in MetaMask</td></tr>
+  <tr><td><strong>Where stored</strong></td><td>On blockchain, in database</td><td>Inside MetaMask only</td></tr>
+</table>
+
+<!-- ───────────────────────────── -->
+<h2>5. Verifying a Certificate</h2>
+
+<h3>Method 1 — By Certificate ID</h3>
+<pre>
+Go to localhost:3000/verify
+Paste certId: 0x6748e1466c...
+        ↓
+Frontend calls: contract.verifyCertificate(certId)
+        ↓
+Hardhat returns: valid, studentName, courseName, issuer, issuedAt, ipfsCid
+        ↓
+Shows: VALID ✓ (or REVOKED ✗)
+</pre>
+
+<h3>Method 2 — By uploading PDF</h3>
+<pre>
+Upload the PDF file
+        ↓
+Browser hashes it: fileHash = keccak256(pdf_bytes)
+        ↓
+Calls: contract.verifyCertificateByHash(fileHash)
+        ↓
+Blockchain searches for matching hash
+
+FOUND    → Certificate is REAL ✓  (PDF not tampered)
+NOT FOUND → Certificate is FAKE ✗  (PDF was edited)
+</pre>
+
+<!-- ───────────────────────────── -->
+<h2>6. Why Blockchain?</h2>
+
+<table>
+  <tr><th>Normal Database</th><th>Blockchain</th></tr>
+  <tr><td>Can be hacked and edited</td><td>Cannot be changed once written</td></tr>
+  <tr><td>Controlled by one company</td><td>Decentralized — no single owner</td></tr>
+  <tr><td>Can be deleted</td><td>Permanent forever</td></tr>
+  <tr><td>Requires trust in company</td><td>Trustless — math proves it</td></tr>
+</table>
+
+<!-- ───────────────────────────── -->
+<h2>7. Simple Analogy</h2>
+<p>Think of it like a <strong>notary stamp</strong> on a document:</p>
+<ul>
+  <li><strong>Private key</strong> = the notary's unique stamp (only they have it)</li>
+  <li><strong>Public key</strong> = the notary's name (everyone can verify who stamped it)</li>
+  <li><strong>Certificate ID</strong> = the unique serial number on the stamped document</li>
+  <li><strong>Blockchain</strong> = the government registry that records the stamp forever</li>
+  <li><strong>Pinata/IPFS</strong> = the archive room where the actual document is stored</li>
+</ul>
+
+<footer>
+  CertChain — Decentralized Certificate Verification System &nbsp;|&nbsp; March 2026
+</footer>
+
+</body>
+</html>

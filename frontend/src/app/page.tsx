@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FaShieldAlt, FaUniversity, FaSearch, FaLink, FaArrowRight, FaEthereum, FaFileAlt, FaGlobe } from "react-icons/fa";
+import { FaShieldAlt, FaUniversity, FaSearch, FaLink, FaArrowRight, FaEthereum, FaFileAlt, FaGlobe, FaQrcode, FaBan, FaHistory, FaShareAlt } from "react-icons/fa";
 import { prisma } from "@/lib/prisma";
 
 async function getStats() {
@@ -129,13 +129,47 @@ export default async function HomePage() {
           <p className="text-primary-200 mb-8 text-lg">
             Join the future of academic verification. Issue your first certificate in minutes.
           </p>
-          <Link
-            href="/dashboard"
-            className="inline-flex items-center gap-2 bg-white text-primary-700 font-semibold px-8 py-3.5 rounded-xl hover:bg-primary-50 transition-all shadow-lg"
-          >
-            Go to Dashboard
-            <FaArrowRight className="text-sm" />
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/dashboard"
+              className="inline-flex items-center gap-2 bg-white text-primary-700 font-semibold px-8 py-3.5 rounded-xl hover:bg-primary-50 transition-all shadow-lg"
+            >
+              Go to Dashboard
+              <FaArrowRight className="text-sm" />
+            </Link>
+            <Link
+              href="/verify"
+              className="inline-flex items-center gap-2 border-2 border-white/30 text-white font-semibold px-8 py-3.5 rounded-xl hover:bg-white/10 hover:border-white/50 transition-all"
+            >
+              <FaSearch className="text-sm" />
+              Verify Certificate
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* New Features Highlight */}
+      <section className="py-24 bg-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <p className="text-primary-600 font-semibold text-sm uppercase tracking-wider mb-2">What&apos;s New</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">Powerful New Features</h2>
+            <p className="text-gray-500 mt-3 max-w-xl mx-auto">We&apos;ve added tools to make certificate management even more powerful and shareable.</p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Feature icon={<FaQrcode />} title="QR Code Sharing" desc="Generate QR codes for any certificate — perfect for printing on physical documents or sharing digitally." />
+            <Feature icon={<FaBan />} title="Certificate Revocation" desc="Issuers can revoke certificates directly from the dashboard, updating both the blockchain and database." />
+            <Feature icon={<FaShareAlt />} title="Public Certificate Page" desc="Each certificate has a unique shareable URL that anyone can open to view full details and verify authenticity." />
+            <Feature icon={<FaHistory />} title="Verification Audit Log" desc="Every verification attempt is recorded — see who verified which certificate and when, all from the dashboard." />
+          </div>
+          <div className="text-center mt-10">
+            <Link
+              href="/dashboard"
+              className="inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 font-semibold text-sm"
+            >
+              Explore in Dashboard <FaArrowRight className="text-xs" />
+            </Link>
+          </div>
         </div>
       </section>
     </div>

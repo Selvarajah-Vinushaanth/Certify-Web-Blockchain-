@@ -5,9 +5,10 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { ethers } from "ethers";
 import { getWriteContract } from "@/lib/blockchain";
-import { FaPlus, FaUniversity, FaFileAlt, FaCheckCircle, FaExternalLinkAlt, FaSearch, FaTrash } from "react-icons/fa";
+import { FaPlus, FaUniversity, FaFileAlt, FaCheckCircle, FaExternalLinkAlt, FaSearch, FaTrash, FaBan, FaQrcode, FaHistory, FaLink } from "react-icons/fa";
 import Link from "next/link";
 import ConfirmModal from "@/components/ConfirmModal";
+import { QRCodeSVG } from "qrcode.react";
 
 interface Institution {
   id: string;
@@ -28,6 +29,14 @@ interface Certificate {
   institution: Institution;
 }
 
+interface VerificationLog {
+  id: string;
+  certId: string;
+  verifierIp: string;
+  verifiedAt: string;
+  result: boolean;
+}
+
 export default function DashboardPage() {
   const [institutions, setInstitutions] = useState<Institution[]>([]);
   const [certificates, setCertificates] = useState<Certificate[]>([]);
@@ -37,9 +46,12 @@ export default function DashboardPage() {
   const [regWallet, setRegWallet] = useState("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266");
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [tab, setTab] = useState<"certs" | "institutions">("certs");
+  const [tab, setTab] = useState<"certs" | "institutions" | "logs">("certs");
   const [deleteTarget, setDeleteTarget] = useState<{ type: "institution" | "certificate"; id: string; name: string } | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [revoking, setRevoking] = useState<string | null>(null);
+  const [qrCertId, setQrCertId] = useState<string | null>(null);
+  const [verificationLogs, setVerificationLogs] = useState<VerificationLog[]>([]);
 
   useEffect(() => {
     fetchData();
@@ -47,14 +59,39 @@ export default function DashboardPage() {
 
   async function fetchData() {
     try {
-      const [instRes, certRes] = await Promise.all([
+      const [instRes, certRes, logRes] = await Promise.all([
         axios.get("/api/institutions"),
         axios.get("/api/certificates"),
+        axios.get("/api/verification-logs"),
       ]);
       setInstitutions(instRes.data);
       setCertificates(certRes.data);
+      setVerificationLogs(logRes.data);
     } catch {
       toast.error("Failed to load data");
+    }
+  }
+
+  async function handleRevoke(cert: Certificate) {
+    if (!cert.certId || cert.certId.startsWith("pending")) {
+      return toast.error("Certificate hasn't been confirmed on-chain yet");
+    }
+    if (cert.status === "REVOKED") {
+      return toast.error("Certificate is already revoked");
+    }
+    setRevoking(cert.id);
+    try {
+      const contract = await getWriteContract();
+      const tx = await contract.revokeCertificate(cert.certId);
+      await tx.wait();
+
+      await axios.patch(`/api/certificates/${cert.id}/revoke`);
+      toast.success("Certificate revoked on-chain and in database");
+      fetchData();
+    } catch (err: any) {
+      toast.error(err?.reason || "Revocation failed — are you the issuer?");
+    } finally {
+      setRevoking(null);
     }
   }
 
@@ -116,6 +153,7 @@ export default function DashboardPage() {
   }
 
   const activeCerts = certificates.filter((c) => c.status === "ACTIVE").length;
+  const revokedCerts = certificates.filter((c) => c.status === "REVOKED").length;
 
   const filteredCerts = certificates.filter(
     (c) =>
@@ -150,9 +188,10 @@ export default function DashboardPage() {
         </div>
 
         {/* Stat Cards */}
-        <div className="grid grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <StatCard label="Total Certificates" value={certificates.length} color="primary" icon={<FaFileAlt />} />
           <StatCard label="Active" value={activeCerts} color="green" icon={<FaCheckCircle />} />
+          <StatCard label="Revoked" value={revokedCerts} color="red" icon={<FaBan />} />
           <StatCard label="Institutions" value={institutions.length} color="purple" icon={<FaUniversity />} />
         </div>
 
@@ -226,6 +265,14 @@ export default function DashboardPage() {
           >
             Institutions ({institutions.length})
           </button>
+          <button
+            onClick={() => setTab("logs")}
+            className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
+              tab === "logs" ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            Audit Log ({verificationLogs.length})
+          </button>
         </div>
 
         {/* Certificates Tab */}
@@ -287,7 +334,7 @@ export default function DashboardPage() {
                             {new Date(cert.issuedAt).toLocaleDateString()}
                           </td>
                           <td className="px-4 py-3.5">
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-1">
                               {cert.ipfsCid && (
                                 <a
                                   href={`${process.env.NEXT_PUBLIC_IPFS_GATEWAY || "https://gateway.pinata.cloud/ipfs"}/${cert.ipfsCid}`}
@@ -299,6 +346,30 @@ export default function DashboardPage() {
                                   <FaExternalLinkAlt className="text-xs" />
                                 </a>
                               )}
+                              <Link
+                                href={`/certificate/${cert.id}`}
+                                className="text-primary-600 hover:text-primary-800 p-1.5 rounded-lg hover:bg-primary-50 transition-colors"
+                                title="Public certificate link"
+                              >
+                                <FaLink className="text-xs" />
+                              </Link>
+                              <button
+                                onClick={() => setQrCertId(qrCertId === cert.id ? null : cert.id)}
+                                className="text-gray-500 hover:text-gray-700 p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+                                title="Show QR code"
+                              >
+                                <FaQrcode className="text-xs" />
+                              </button>
+                              {cert.status === "ACTIVE" && !cert.certId?.startsWith("pending") && (
+                                <button
+                                  onClick={() => handleRevoke(cert)}
+                                  disabled={revoking === cert.id}
+                                  className="text-orange-500 hover:text-orange-700 p-1.5 rounded-lg hover:bg-orange-50 transition-colors disabled:opacity-50"
+                                  title="Revoke certificate"
+                                >
+                                  <FaBan className="text-xs" />
+                                </button>
+                              )}
                               <button
                                 onClick={() =>
                                   setDeleteTarget({ type: "certificate", id: cert.id, name: `${cert.studentName} — ${cert.courseName}` })
@@ -309,6 +380,16 @@ export default function DashboardPage() {
                                 <FaTrash className="text-xs" />
                               </button>
                             </div>
+                            {qrCertId === cert.id && (
+                              <div className="mt-2 p-3 bg-white border border-gray-200 rounded-xl shadow-lg inline-block">
+                                <QRCodeSVG
+                                  value={`${typeof window !== "undefined" ? window.location.origin : ""}/certificate/${cert.id}`}
+                                  size={120}
+                                  level="M"
+                                />
+                                <p className="text-xs text-gray-400 mt-1 text-center">Scan to verify</p>
+                              </div>
+                            )}
                           </td>
                         </tr>
                       ))}
@@ -357,6 +438,56 @@ export default function DashboardPage() {
                     </div>
                   </div>
                 ))}
+              </div>
+            )}
+          </section>
+        )}
+
+        {/* Audit Log Tab */}
+        {tab === "logs" && (
+          <section className="animate-fade-in">
+            {verificationLogs.length === 0 ? (
+              <div className="bg-white rounded-2xl border border-gray-100 p-12 text-center">
+                <FaHistory className="text-4xl text-gray-300 mx-auto mb-3" />
+                <p className="text-gray-400">No verification attempts recorded yet.</p>
+              </div>
+            ) : (
+              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="bg-gray-50/80 border-b border-gray-100">
+                        <th className="px-4 py-3 text-left font-medium text-gray-500 text-xs uppercase tracking-wider">Cert ID</th>
+                        <th className="px-4 py-3 text-left font-medium text-gray-500 text-xs uppercase tracking-wider">Result</th>
+                        <th className="px-4 py-3 text-left font-medium text-gray-500 text-xs uppercase tracking-wider">Verifier IP</th>
+                        <th className="px-4 py-3 text-left font-medium text-gray-500 text-xs uppercase tracking-wider">Verified At</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-50">
+                      {verificationLogs.map((log) => (
+                        <tr key={log.id} className="hover:bg-gray-50/50 transition-colors">
+                          <td className="px-4 py-3.5 font-mono text-xs text-gray-600">{log.certId?.slice(0, 18)}…</td>
+                          <td className="px-4 py-3.5">
+                            <span
+                              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${
+                                log.result
+                                  ? "bg-green-50 text-green-700 border border-green-200"
+                                  : "bg-red-50 text-red-700 border border-red-200"
+                              }`}
+                            >
+                              <span className={`w-1.5 h-1.5 rounded-full ${log.result ? "bg-green-500" : "bg-red-500"}`} />
+                              {log.result ? "VALID" : "INVALID"}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3.5 text-gray-500 text-xs">{log.verifierIp || "—"}</td>
+                          <td className="px-4 py-3.5 text-gray-500 text-xs">
+                            {new Date(log.verifiedAt).toLocaleString()}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             )}
           </section>

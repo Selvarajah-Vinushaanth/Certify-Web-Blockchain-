@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     await prisma.verificationLog.create({
       data: {
         certId: onChainId,
-        verifierIp: req.headers.get("x-forwarded-for") || "unknown",
+        verifierIp: req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || req.headers.get("x-real-ip") || req.ip || "unknown",
         result: valid,
       },
     });

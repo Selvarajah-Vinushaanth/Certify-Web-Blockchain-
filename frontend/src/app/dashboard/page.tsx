@@ -47,7 +47,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [tab, setTab] = useState<"certs" | "institutions" | "logs">("certs");
-  const [deleteTarget, setDeleteTarget] = useState<{ type: "institution" | "certificate"; id: string; name: string } | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<{ type: "institution" | "certificate" | "log"; id: string; name: string } | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [revoking, setRevoking] = useState<string | null>(null);
   const [qrCertId, setQrCertId] = useState<string | null>(null);
@@ -102,11 +102,15 @@ export default function DashboardPage() {
       const endpoint =
         deleteTarget.type === "institution"
           ? `/api/institutions/${deleteTarget.id}`
+          : deleteTarget.type === "log"
+          ? `/api/verification-logs/${deleteTarget.id}`
           : `/api/certificates/${deleteTarget.id}`;
       await axios.delete(endpoint);
       toast.success(
         deleteTarget.type === "institution"
           ? "Institution deleted successfully"
+          : deleteTarget.type === "log"
+          ? "Audit log entry deleted successfully"
           : "Certificate deleted successfully"
       );
       fetchData();
@@ -461,6 +465,7 @@ export default function DashboardPage() {
                         <th className="px-4 py-3 text-left font-medium text-gray-500 text-xs uppercase tracking-wider">Result</th>
                         <th className="px-4 py-3 text-left font-medium text-gray-500 text-xs uppercase tracking-wider">Verifier IP</th>
                         <th className="px-4 py-3 text-left font-medium text-gray-500 text-xs uppercase tracking-wider">Verified At</th>
+                        <th className="px-4 py-3 text-left font-medium text-gray-500 text-xs uppercase tracking-wider">Actions</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-50">
@@ -483,6 +488,17 @@ export default function DashboardPage() {
                           <td className="px-4 py-3.5 text-gray-500 text-xs">
                             {new Date(log.verifiedAt).toLocaleString()}
                           </td>
+                          <td className="px-4 py-3.5">
+                            <button
+                              onClick={() =>
+                                setDeleteTarget({ type: "log", id: log.id, name: log.certId?.slice(0, 18) + "…" })
+                              }
+                              className="text-red-500 hover:text-red-700 p-1.5 rounded-lg hover:bg-red-50 transition-colors"
+                              title="Delete log entry"
+                            >
+                              <FaTrash className="text-xs" />
+                            </button>
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -500,11 +516,15 @@ export default function DashboardPage() {
         title={
           deleteTarget?.type === "institution"
             ? "Delete Institution"
+            : deleteTarget?.type === "log"
+            ? "Delete Audit Log Entry"
             : "Delete Certificate"
         }
         message={
           deleteTarget?.type === "institution"
             ? `Are you sure you want to delete "${deleteTarget?.name}"? All certificates belonging to this institution will also be removed from the database.`
+            : deleteTarget?.type === "log"
+            ? `Are you sure you want to delete this audit log entry (${deleteTarget?.name})?`
             : `Are you sure you want to delete the certificate for "${deleteTarget?.name}"? This will only remove the database record, not the blockchain entry.`
         }
         loading={deleting}

@@ -4,14 +4,15 @@ import { prisma } from "@/lib/prisma";
 
 async function getStats() {
   try {
-    const [certCount, instCount, verifyCount] = await Promise.all([
+    const [certCount, instCount, verifyCount, revokedCount] = await Promise.all([
       prisma.certificate.count(),
       prisma.institution.count(),
       prisma.verificationLog.count(),
+      prisma.certificate.count({ where: { status: "REVOKED" } }),
     ]);
-    return { certCount, instCount, verifyCount };
+    return { certCount, instCount, verifyCount, revokedCount };
   } catch {
-    return { certCount: 0, instCount: 0, verifyCount: 0 };
+    return { certCount: 0, instCount: 0, verifyCount: 0, revokedCount: 0 };
   }
 }
 
@@ -68,9 +69,10 @@ export default async function HomePage() {
           </div>
 
           {/* Live Stats */}
-          <div className="mt-20 grid grid-cols-3 gap-4 md:gap-8 max-w-2xl mx-auto">
+          <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 max-w-3xl mx-auto">
             <StatBadge value={stats.certCount} label="Certificates Issued" />
             <StatBadge value={stats.instCount} label="Institutions" />
+            <StatBadge value={stats.revokedCount} label="Revoked" />
             <StatBadge value={stats.verifyCount} label="Verifications" />
           </div>
         </div>

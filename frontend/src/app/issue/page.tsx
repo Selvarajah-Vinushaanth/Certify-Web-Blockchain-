@@ -196,7 +196,7 @@ export default function IssuePage() {
             <label className="block text-sm font-semibold text-gray-700 mb-3">Certificate File</label>
             <div
               {...getRootProps()}
-              className={`border-2 border-dashed rounded-xl p-10 text-center cursor-pointer transition-all duration-200 ${
+              className={`border-2 border-dashed rounded-xl p-6 sm:p-10 text-center cursor-pointer transition-all duration-200 ${
                 isDragActive
                   ? "border-primary-500 bg-primary-50 shadow-lg shadow-primary-100"
                   : file
@@ -215,8 +215,8 @@ export default function IssuePage() {
                 )}
               </div>
               {file ? (
-                <div>
-                  <p className="font-semibold text-green-700">{file.name}</p>
+                <div className="w-full overflow-hidden px-2">
+                  <p className="font-semibold text-green-700 truncate max-w-full">{file.name}</p>
                   <p className="text-xs text-gray-400 mt-1">{(file.size / 1024).toFixed(1)} KB — Click to change</p>
                 </div>
               ) : (

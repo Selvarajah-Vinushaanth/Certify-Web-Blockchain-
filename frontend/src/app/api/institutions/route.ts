@@ -9,6 +9,12 @@ export async function GET() {
   return NextResponse.json(institutions);
 }
 
+// DELETE /api/institutions — delete all institutions
+export async function DELETE() {
+  await prisma.institution.deleteMany({});
+  return NextResponse.json({ success: true });
+}
+
 // POST /api/institutions — register a new institution
 export async function POST(req: NextRequest) {
   try {

@@ -9,3 +9,9 @@ export async function GET() {
   });
   return NextResponse.json(logs);
 }
+
+// DELETE /api/verification-logs — delete all log entries
+export async function DELETE() {
+  await prisma.verificationLog.deleteMany({});
+  return NextResponse.json({ success: true });
+}

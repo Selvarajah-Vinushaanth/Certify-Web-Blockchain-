@@ -50,6 +50,13 @@ export default function DashboardPage() {
   const [deleteTarget, setDeleteTarget] = useState<{ type: "institution" | "certificate" | "log"; id: string; name: string } | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [revoking, setRevoking] = useState<string | null>(null);
+  const [revokeTarget, setRevokeTarget] = useState<Certificate | null>(null);
+  const [clearAllLogs, setClearAllLogs] = useState(false);
+  const [clearingLogs, setClearingLogs] = useState(false);
+  const [clearAllCerts, setClearAllCerts] = useState(false);
+  const [clearingCerts, setClearingCerts] = useState(false);
+  const [clearAllInsts, setClearAllInsts] = useState(false);
+  const [clearingInsts, setClearingInsts] = useState(false);
   const [qrCertId, setQrCertId] = useState<string | null>(null);
   const [verificationLogs, setVerificationLogs] = useState<VerificationLog[]>([]);
 
@@ -92,6 +99,49 @@ export default function DashboardPage() {
       toast.error(err?.reason || "Revocation failed — are you the issuer?");
     } finally {
       setRevoking(null);
+      setRevokeTarget(null);
+    }
+  }
+
+  async function handleClearAllLogs() {
+    setClearingLogs(true);
+    try {
+      await axios.delete("/api/verification-logs");
+      toast.success("All audit log entries cleared");
+      fetchData();
+    } catch {
+      toast.error("Failed to clear logs");
+    } finally {
+      setClearingLogs(false);
+      setClearAllLogs(false);
+    }
+  }
+
+  async function handleClearAllCerts() {
+    setClearingCerts(true);
+    try {
+      await axios.delete("/api/certificates");
+      toast.success("All certificates cleared");
+      fetchData();
+    } catch {
+      toast.error("Failed to clear certificates");
+    } finally {
+      setClearingCerts(false);
+      setClearAllCerts(false);
+    }
+  }
+
+  async function handleClearAllInsts() {
+    setClearingInsts(true);
+    try {
+      await axios.delete("/api/institutions");
+      toast.success("All institutions cleared");
+      fetchData();
+    } catch {
+      toast.error("Failed to clear institutions");
+    } finally {
+      setClearingInsts(false);
+      setClearAllInsts(false);
     }
   }
 
@@ -252,7 +302,8 @@ export default function DashboardPage() {
         )}
 
         {/* Tabs */}
-        <div className="flex gap-1 bg-gray-100 p-1 rounded-xl mb-6 w-fit">
+        <div className="flex flex-wrap items-center gap-2 mb-6">
+        <div className="flex gap-1 bg-gray-100 p-1 rounded-xl w-fit">
           <button
             onClick={() => setTab("certs")}
             className={`px-5 py-2 rounded-lg text-sm font-medium transition-all ${
@@ -277,6 +328,31 @@ export default function DashboardPage() {
           >
             Audit Log ({verificationLogs.length})
           </button>
+        </div>
+        {tab === "logs" && verificationLogs.length > 0 && (
+          <button
+            onClick={() => setClearAllLogs(true)}
+            className="ml-auto text-xs font-medium text-red-500 hover:text-red-700 border border-red-200 hover:border-red-400 px-3 py-1.5 rounded-lg hover:bg-red-50 transition-colors flex items-center gap-1.5"
+          >
+            <FaTrash className="text-[10px]" /> Clear All
+          </button>
+        )}
+        {tab === "certs" && certificates.length > 0 && (
+          <button
+            onClick={() => setClearAllCerts(true)}
+            className="ml-auto text-xs font-medium text-red-500 hover:text-red-700 border border-red-200 hover:border-red-400 px-3 py-1.5 rounded-lg hover:bg-red-50 transition-colors flex items-center gap-1.5"
+          >
+            <FaTrash className="text-[10px]" /> Clear All
+          </button>
+        )}
+        {tab === "institutions" && institutions.length > 0 && (
+          <button
+            onClick={() => setClearAllInsts(true)}
+            className="ml-auto text-xs font-medium text-red-500 hover:text-red-700 border border-red-200 hover:border-red-400 px-3 py-1.5 rounded-lg hover:bg-red-50 transition-colors flex items-center gap-1.5"
+          >
+            <FaTrash className="text-[10px]" /> Clear All
+          </button>
+        )}
         </div>
 
         {/* Certificates Tab */}
@@ -366,7 +442,7 @@ export default function DashboardPage() {
                               </button>
                               {cert.status === "ACTIVE" && !cert.certId?.startsWith("pending") && (
                                 <button
-                                  onClick={() => handleRevoke(cert)}
+                                  onClick={() => setRevokeTarget(cert)}
                                   disabled={revoking === cert.id}
                                   className="text-orange-500 hover:text-orange-700 p-1.5 rounded-lg hover:bg-orange-50 transition-colors disabled:opacity-50"
                                   title="Revoke certificate"
@@ -509,6 +585,50 @@ export default function DashboardPage() {
           </section>
         )}
       </div>
+
+      {/* Clear All Logs confirmation modal */}
+      <ConfirmModal
+        open={clearAllLogs}
+        title="Clear All Audit Logs"
+        message={`Are you sure you want to delete all ${verificationLogs.length} audit log entries? This cannot be undone.`}
+        confirmLabel={clearingLogs ? "Clearing…" : "Clear All"}
+        loading={clearingLogs}
+        onConfirm={handleClearAllLogs}
+        onCancel={() => setClearAllLogs(false)}
+      />
+
+      {/* Clear All Certificates confirmation modal */}
+      <ConfirmModal
+        open={clearAllCerts}
+        title="Clear All Certificates"
+        message={`Are you sure you want to delete all ${certificates.length} certificate records? This only removes database records, not blockchain entries.`}
+        confirmLabel={clearingCerts ? "Clearing…" : "Clear All"}
+        loading={clearingCerts}
+        onConfirm={handleClearAllCerts}
+        onCancel={() => setClearAllCerts(false)}
+      />
+
+      {/* Clear All Institutions confirmation modal */}
+      <ConfirmModal
+        open={clearAllInsts}
+        title="Clear All Institutions"
+        message={`Are you sure you want to delete all ${institutions.length} institutions? All associated certificates will also be removed from the database.`}
+        confirmLabel={clearingInsts ? "Clearing…" : "Clear All"}
+        loading={clearingInsts}
+        onConfirm={handleClearAllInsts}
+        onCancel={() => setClearAllInsts(false)}
+      />
+
+      {/* Revoke confirmation modal */}
+      <ConfirmModal
+        open={!!revokeTarget}
+        title="Revoke Certificate"
+        message={`Are you sure you want to revoke the certificate for "${revokeTarget?.studentName} — ${revokeTarget?.courseName}"? This action will be permanently recorded on the blockchain and cannot be undone.`}
+        confirmLabel={revoking === revokeTarget?.id ? "Revoking…" : "Revoke"}
+        loading={revoking === revokeTarget?.id}
+        onConfirm={() => revokeTarget && handleRevoke(revokeTarget)}
+        onCancel={() => setRevokeTarget(null)}
+      />
 
       {/* Delete confirmation modal */}
       <ConfirmModal

@@ -73,3 +73,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
+
+// DELETE /api/certificates — delete all certificates
+export async function DELETE() {
+  await prisma.certificate.deleteMany({});
+  return NextResponse.json({ success: true });
+}

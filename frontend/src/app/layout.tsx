@@ -6,9 +6,12 @@ import { FaCertificate, FaGithub, FaEthereum } from "react-icons/fa";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "CertChain — Decentralized Certificate Verification",
+  title: "CertChain",
   description:
     "Issue and verify academic certificates on the blockchain. Tamper-proof, instant, and transparent.",
+  icons: {
+    icon: "/icon.svg",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

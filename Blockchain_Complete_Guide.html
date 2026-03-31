@@ -1,0 +1,2064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blockchain Technology — Complete Learning Guide</title>
+  <style>
+    @media print {
+      body { margin: 0; padding: 20px; font-size: 11pt; }
+      .page-break { page-break-before: always; }
+      .no-print { display: none; }
+      h1 { font-size: 22pt; }
+      h2 { font-size: 16pt; }
+      h3 { font-size: 13pt; }
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 30px;
+      color: #1a1a2e;
+      line-height: 1.7;
+      background: #fff;
+    }
+
+    /* ── Cover Page ── */
+    .cover {
+      text-align: center;
+      padding: 80px 20px 60px;
+      border-bottom: 4px solid #0f3460;
+    }
+    .cover h1 {
+      font-size: 36px;
+      color: #0f3460;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+    .cover .subtitle {
+      font-size: 18px;
+      color: #555;
+      margin-bottom: 40px;
+    }
+    .cover .meta {
+      font-size: 14px;
+      color: #888;
+    }
+
+    /* ── Headings ── */
+    h1 { color: #0f3460; border-bottom: 3px solid #0f3460; padding-bottom: 8px; margin-top: 50px; font-size: 26px; }
+    h2 { color: #16537e; margin-top: 35px; font-size: 20px; border-left: 5px solid #e94560; padding-left: 12px; }
+    h3 { color: #0f3460; margin-top: 25px; font-size: 16px; }
+    h4 { color: #333; margin-top: 18px; font-size: 14px; }
+
+    /* ── Code Blocks ── */
+    pre {
+      background: #f0f4f8;
+      border-left: 4px solid #0f3460;
+      padding: 15px 18px;
+      border-radius: 6px;
+      font-size: 13px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-family: 'Consolas', 'Courier New', monospace;
+      overflow-x: auto;
+    }
+    code {
+      background: #e8eef4;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 13px;
+    }
+
+    /* ── Tables ── */
+    table { border-collapse: collapse; width: 100%; margin: 18px 0; font-size: 14px; }
+    th { background: #0f3460; color: white; padding: 10px 14px; text-align: left; font-weight: 600; }
+    td { border: 1px solid #dde; padding: 10px 14px; }
+    tr:nth-child(even) { background: #f7f9fc; }
+
+    /* ── Info Boxes ── */
+    .info-box {
+      background: #e8f4fd;
+      border-left: 5px solid #2196F3;
+      padding: 14px 18px;
+      margin: 18px 0;
+      border-radius: 4px;
+    }
+    .warn-box {
+      background: #fff8e1;
+      border-left: 5px solid #ff9800;
+      padding: 14px 18px;
+      margin: 18px 0;
+      border-radius: 4px;
+    }
+    .key-box {
+      background: #f3e5f5;
+      border-left: 5px solid #9c27b0;
+      padding: 14px 18px;
+      margin: 18px 0;
+      border-radius: 4px;
+    }
+    .example-box {
+      background: #e8f5e9;
+      border-left: 5px solid #4caf50;
+      padding: 14px 18px;
+      margin: 18px 0;
+      border-radius: 4px;
+    }
+
+    /* ── Flow Steps ── */
+    .flow-step {
+      background: #f0f4f8;
+      border-left: 5px solid #0f3460;
+      padding: 14px 18px;
+      margin: 12px 0;
+      border-radius: 4px;
+    }
+    .flow-step .step-num {
+      font-size: 18px;
+      font-weight: bold;
+      color: #e94560;
+    }
+    .arrow { text-align: center; font-size: 24px; color: #0f3460; margin: 4px 0; }
+
+    /* ── Diagram Boxes ── */
+    .diagram {
+      border: 2px solid #0f3460;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px 0;
+      background: #fafbfd;
+    }
+    .diagram-title {
+      text-align: center;
+      font-weight: bold;
+      color: #0f3460;
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+    .diagram-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 8px 0;
+    }
+    .diagram-box {
+      background: #0f3460;
+      color: white;
+      padding: 10px 18px;
+      border-radius: 8px;
+      text-align: center;
+      min-width: 120px;
+      font-size: 13px;
+    }
+    .diagram-box.alt {
+      background: #e94560;
+    }
+    .diagram-box.green {
+      background: #2e7d32;
+    }
+    .diagram-box.orange {
+      background: #e65100;
+    }
+    .diagram-box.purple {
+      background: #6a1b9a;
+    }
+    .diagram-arrow {
+      font-size: 22px;
+      color: #0f3460;
+      font-weight: bold;
+    }
+
+    /* ── TOC ── */
+    .toc {
+      background: #f7f9fc;
+      padding: 25px 30px;
+      border-radius: 10px;
+      border: 2px solid #dde;
+      margin: 30px 0;
+    }
+    .toc h2 { border: none; padding: 0; margin-top: 0; }
+    .toc ul { list-style: none; padding-left: 0; }
+    .toc li { padding: 4px 0; font-size: 15px; }
+    .toc li a { text-decoration: none; color: #16537e; }
+    .toc li a:hover { text-decoration: underline; }
+    .toc .section-num { font-weight: bold; color: #e94560; margin-right: 8px; }
+
+    /* ── Bullet Lists ── */
+    ul, ol { margin: 10px 0; padding-left: 25px; }
+    li { margin: 5px 0; }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: 60px;
+      text-align: center;
+      color: #aaa;
+      font-size: 12px;
+      border-top: 2px solid #eee;
+      padding-top: 20px;
+    }
+
+    /* ── Separator ── */
+    hr { border: none; border-top: 2px solid #eee; margin: 40px 0; }
+
+    .highlight { color: #e94560; font-weight: bold; }
+    strong { color: #0f3460; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- COVER PAGE -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="cover">
+  <h1>Blockchain Technology</h1>
+  <div class="subtitle">A Complete Learning Guide — From Basics to Building DApps</div>
+  <p style="font-size:15px; color:#333; margin-top: 30px;">
+    Covering: Blockchain Fundamentals &bull; Ethereum &bull; Solidity &bull; Smart Contracts<br/>
+    Hardhat &bull; MetaMask &bull; IPFS &bull; Web3 &bull; DApp Architecture
+  </p>
+  <div class="meta" style="margin-top: 40px;">
+    Prepared for Campus Learning &bull; March 2026
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- TABLE OF CONTENTS -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+
+<div class="toc">
+  <h2>Table of Contents</h2>
+  <ul>
+    <li><span class="section-num">1.</span> <a href="#s1">What Is Blockchain?</a></li>
+    <li><span class="section-num">2.</span> <a href="#s2">How Blockchain Works — Core Concepts</a></li>
+    <li><span class="section-num">3.</span> <a href="#s3">Types of Blockchain Networks</a></li>
+    <li><span class="section-num">4.</span> <a href="#s4">Consensus Mechanisms</a></li>
+    <li><span class="section-num">5.</span> <a href="#s5">Cryptography in Blockchain</a></li>
+    <li><span class="section-num">6.</span> <a href="#s6">Ethereum — The Programmable Blockchain</a></li>
+    <li><span class="section-num">7.</span> <a href="#s7">Smart Contracts & Solidity</a></li>
+    <li><span class="section-num">8.</span> <a href="#s8">Hardhat — Development Framework</a></li>
+    <li><span class="section-num">9.</span> <a href="#s9">MetaMask — Your Crypto Wallet</a></li>
+    <li><span class="section-num">10.</span> <a href="#s10">IPFS — Decentralized File Storage</a></li>
+    <li><span class="section-num">11.</span> <a href="#s11">Databases in Blockchain Projects</a></li>
+    <li><span class="section-num">12.</span> <a href="#s12">Web3 & Ethers.js — Connecting Frontend to Blockchain</a></li>
+    <li><span class="section-num">13.</span> <a href="#s13">DApp Architecture — Full Stack Flow</a></li>
+    <li><span class="section-num">14.</span> <a href="#s14">Tokens — ERC-20 & ERC-721 (NFTs)</a></li>
+    <li><span class="section-num">15.</span> <a href="#s15">Gas & Transaction Fees</a></li>
+    <li><span class="section-num">16.</span> <a href="#s16">Testnets & Deployment</a></li>
+    <li><span class="section-num">17.</span> <a href="#s17">Security Best Practices</a></li>
+    <li><span class="section-num">18.</span> <a href="#s18">Real-World Use Cases</a></li>
+    <li><span class="section-num">19.</span> <a href="#s19">Complete Project Walkthrough — CertChain</a></li>
+    <li><span class="section-num">20.</span> <a href="#s20">Glossary of Key Terms</a></li>
+  </ul>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 1: WHAT IS BLOCKCHAIN? -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<h1 id="s1">1. What Is Blockchain?</h1>
+
+<p>A <strong>blockchain</strong> is a <em>distributed, immutable digital ledger</em> that records transactions across a network of computers. Think of it as a shared notebook that everyone can read, but no one can erase or alter once something is written.</p>
+
+<h2>1.1 The Simple Analogy</h2>
+
+<div class="example-box">
+  <strong>Imagine a classroom register:</strong>
+  <ul>
+    <li>Every student has an identical copy of the attendance register</li>
+    <li>When a new entry is made, ALL copies are updated simultaneously</li>
+    <li>No single person can erase or change a past entry — because everyone else's copy would show the original</li>
+    <li>If someone tries to cheat, their copy won't match the majority — so the fake is rejected</li>
+  </ul>
+  <p>That's essentially how blockchain works!</p>
+</div>
+
+<h2>1.2 Key Properties of Blockchain</h2>
+
+<table>
+  <tr><th>Property</th><th>What It Means</th></tr>
+  <tr><td><strong>Decentralized</strong></td><td>No single authority controls the data — it's shared across many computers (nodes)</td></tr>
+  <tr><td><strong>Immutable</strong></td><td>Once recorded, data cannot be changed or deleted</td></tr>
+  <tr><td><strong>Transparent</strong></td><td>All participants can view the entire history of transactions</td></tr>
+  <tr><td><strong>Trustless</strong></td><td>You don't need to trust any individual — the system's math ensures honesty</td></tr>
+  <tr><td><strong>Distributed</strong></td><td>Identical copies exist on thousands of computers worldwide</td></tr>
+</table>
+
+<h2>1.3 Blockchain vs Traditional Database</h2>
+
+<table>
+  <tr><th>Feature</th><th>Traditional Database (MySQL, PostgreSQL)</th><th>Blockchain</th></tr>
+  <tr><td>Control</td><td>One company/person owns & controls it</td><td>No single owner — decentralized</td></tr>
+  <tr><td>Data Modification</td><td>Admin can edit/delete any record</td><td>Once written, records are permanent</td></tr>
+  <tr><td>Trust</td><td>You must trust the database owner</td><td>Trust is built into the protocol</td></tr>
+  <tr><td>Speed</td><td>Very fast (milliseconds)</td><td>Slower (seconds to minutes)</td></tr>
+  <tr><td>Cost</td><td>Low operational cost</td><td>Costs "gas" for each transaction</td></tr>
+  <tr><td>Best For</td><td>Private apps, fast queries</td><td>Public records, trust-critical data</td></tr>
+</table>
+
+<h2>1.4 Brief History</h2>
+<ul>
+  <li><strong>2008</strong> — Satoshi Nakamoto publishes the Bitcoin whitepaper</li>
+  <li><strong>2009</strong> — Bitcoin network goes live — first blockchain</li>
+  <li><strong>2015</strong> — Ethereum launches — introduces smart contracts</li>
+  <li><strong>2017</strong> — ICO boom — thousands of tokens created</li>
+  <li><strong>2020+</strong> — DeFi, NFTs, and enterprise blockchain adoption explode</li>
+</ul>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 2: HOW BLOCKCHAIN WORKS -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<h1 id="s2">2. How Blockchain Works — Core Concepts</h1>
+
+<h2>2.1 Blocks</h2>
+<p>A <strong>block</strong> is a container that holds a batch of transactions. Each block contains:</p>
+
+<div class="diagram">
+  <div class="diagram-title">Structure of a Block</div>
+  <pre>
+┌─────────────────────────────────────────┐
+│              BLOCK #1042                │
+├─────────────────────────────────────────┤
+│  Block Header:                          │
+│    • Previous Block Hash: 0x8a3f...     │
+│    • Timestamp: 2026-03-30 10:15:00     │
+│    • Nonce: 7839241                     │
+│    • Merkle Root: 0x4b2e...             │
+├─────────────────────────────────────────┤
+│  Transactions:                          │
+│    TX1: Alice → Bob: 2 ETH              │
+│    TX2: Carol → Dave: 0.5 ETH           │
+│    TX3: Eve → Frank: 1.2 ETH            │
+│    ...                                  │
+├─────────────────────────────────────────┤
+│  This Block's Hash: 0x7c91...           │
+└─────────────────────────────────────────┘
+  </pre>
+</div>
+
+<h2>2.2 The Chain</h2>
+<p>Blocks are linked together using <strong>cryptographic hashes</strong>. Each block contains the hash of the previous block, creating an unbreakable chain:</p>
+
+<div class="diagram">
+  <div class="diagram-title">How Blocks Link Together</div>
+  <div class="diagram-row">
+    <div class="diagram-box">Block #1<br/><small>Hash: 0xABC</small><br/><small>Prev: 0x000</small></div>
+    <span class="diagram-arrow">→</span>
+    <div class="diagram-box alt">Block #2<br/><small>Hash: 0xDEF</small><br/><small>Prev: 0xABC</small></div>
+    <span class="diagram-arrow">→</span>
+    <div class="diagram-box green">Block #3<br/><small>Hash: 0x123</small><br/><small>Prev: 0xDEF</small></div>
+    <span class="diagram-arrow">→</span>
+    <div class="diagram-box orange">Block #4<br/><small>Hash: 0x456</small><br/><small>Prev: 0x123</small></div>
+  </div>
+</div>
+
+<div class="warn-box">
+  <strong>Why is this secure?</strong> If someone changes data in Block #2, its hash changes. But Block #3 stores Block #2's original hash — so the chain breaks instantly. Every node in the network would reject the tampered version.
+</div>
+
+<h2>2.3 Nodes and the Peer-to-Peer Network</h2>
+<p>A blockchain runs on a <strong>peer-to-peer (P2P) network</strong> — a collection of computers (called <strong>nodes</strong>) that communicate directly with each other, with no central server.</p>
+
+<h3>Types of Nodes:</h3>
+<table>
+  <tr><th>Node Type</th><th>Description</th></tr>
+  <tr><td><strong>Full Node</strong></td><td>Stores the complete blockchain history. Validates every transaction and block independently.</td></tr>
+  <tr><td><strong>Light Node</strong></td><td>Stores only block headers. Relies on full nodes for detailed data. Used in mobile wallets.</td></tr>
+  <tr><td><strong>Mining/Validator Node</strong></td><td>Full node that also creates new blocks (mining in PoW, validating in PoS).</td></tr>
+  <tr><td><strong>Archive Node</strong></td><td>Stores everything a full node does PLUS all historical state data. Used for deep analytics.</td></tr>
+</table>
+
+<div class="diagram">
+  <div class="diagram-title">Peer-to-Peer Network vs Traditional Client-Server</div>
+  <pre>
+  Traditional (Client-Server):         Blockchain (Peer-to-Peer):
+
+       ┌──────────┐                   Node ──── Node
+       │  SERVER   │                    │  ╲    ╱  │
+       └────┬─────┘                    │    ╲ ╱    │
+      ╱     │     ╲                   Node ──── Node
+  Client  Client  Client               │  ╱    ╲  │
+                                       │ ╱      ╲ │
+  (Server controls everything)        Node ──── Node
+  (Single point of failure)
+                                      (No central server)
+                                      (Every node is equal)
+  </pre>
+</div>
+
+<h2>2.4 Transactions</h2>
+<p>A <strong>transaction</strong> is any action recorded on the blockchain. In cryptocurrency, it's a transfer of coins. In Ethereum, it can also be a smart contract call.</p>
+
+<h3>Lifecycle of a Transaction:</h3>
+<div class="flow-step">
+  <span class="step-num">1.</span> <strong>Create:</strong> User creates and signs the transaction with their private key
+</div>
+<div class="arrow">↓</div>
+<div class="flow-step">
+  <span class="step-num">2.</span> <strong>Broadcast:</strong> Transaction is sent to the network and enters the <em>mempool</em> (waiting area)
+</div>
+<div class="arrow">↓</div>
+<div class="flow-step">
+  <span class="step-num">3.</span> <strong>Validate:</strong> Nodes check: Does the sender have enough funds? Is the signature valid?
+</div>
+<div class="arrow">↓</div>
+<div class="flow-step">
+  <span class="step-num">4.</span> <strong>Include in Block:</strong> A miner/validator picks the transaction and includes it in a new block
+</div>
+<div class="arrow">↓</div>
+<div class="flow-step">
+  <span class="step-num">5.</span> <strong>Confirm:</strong> The block is added to the chain. Transaction is now permanent!
+</div>
+
+<h2>2.5 Merkle Trees</h2>
+<p>Blockchains use <strong>Merkle Trees</strong> to efficiently organize transactions within a block. It's a tree structure where:</p>
+<ul>
+  <li>Each <strong>leaf node</strong> = hash of a transaction</li>
+  <li>Each <strong>parent node</strong> = hash of its two children combined</li>
+  <li>The <strong>root</strong> (Merkle Root) = a single hash representing ALL transactions</li>
+</ul>
+
+<div class="diagram">
+  <div class="diagram-title">Merkle Tree Structure</div>
+  <pre>
+                    Merkle Root
+                   ┌────┴────┐
+               Hash(AB)    Hash(CD)
+              ┌───┴───┐  ┌───┴───┐
+          Hash(A)  Hash(B)  Hash(C)  Hash(D)
+            │        │        │        │
+           TX-A    TX-B     TX-C     TX-D
+  </pre>
+</div>
+
+<div class="info-box">
+  <strong>Why Merkle Trees?</strong> To verify a single transaction, you don't need to download the entire block. You only need the hashes along the path from the transaction to the root — this is called a <em>Merkle Proof</em>. This makes light nodes (like mobile wallets) possible.
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 3: TYPES OF BLOCKCHAIN NETWORKS -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<h1 id="s3">3. Types of Blockchain Networks</h1>
+
+<table>
+  <tr>
+    <th>Type</th>
+    <th>Who Can Join?</th>
+    <th>Who Validates?</th>
+    <th>Examples</th>
+    <th>Use Case</th>
+  </tr>
+  <tr>
+    <td><strong>Public</strong></td>
+    <td>Anyone</td>
+    <td>Anyone</td>
+    <td>Bitcoin, Ethereum</td>
+    <td>Cryptocurrency, DeFi, NFTs</td>
+  </tr>
+  <tr>
+    <td><strong>Private</strong></td>
+    <td>Invited only</td>
+    <td>Selected nodes</td>
+    <td>Hyperledger Fabric</td>
+    <td>Enterprise internal systems</td>
+  </tr>
+  <tr>
+    <td><strong>Consortium</strong></td>
+    <td>Group of organizations</td>
+    <td>Consortium members</td>
+    <td>R3 Corda, Quorum</td>
+    <td>Banking, supply chain</td>
+  </tr>
+  <tr>
+    <td><strong>Hybrid</strong></td>
+    <td>Mixed access</td>
+    <td>Controlled set</td>
+    <td>Dragonchain</td>
+    <td>Government, healthcare</td>
+  </tr>
+</table>
+
+<h2>3.1 Public Blockchain — Deep Dive</h2>
+<ul>
+  <li><strong>Fully open</strong> — anyone can read, write, and participate</li>
+  <li><strong>Fully transparent</strong> — all transactions visible to everyone</li>
+  <li><strong>Censorship-resistant</strong> — no entity can block your transaction</li>
+  <li><strong>Slower</strong> — because thousands of nodes must agree</li>
+  <li><strong>Example:</strong> Ethereum — where our smart contracts live</li>
+</ul>
+
+<h2>3.2 Private Blockchain — Deep Dive</h2>
+<ul>
+  <li><strong>Permissioned</strong> — only authorized users can participate</li>
+  <li><strong>Faster</strong> — fewer nodes to reach consensus</li>
+  <li><strong>Used by enterprises</strong> — banks, hospitals, corporations</li>
+  <li><strong>Less decentralized</strong> — controlled by one organization</li>
+</ul>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 4: CONSENSUS MECHANISMS -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<h1 id="s4">4. Consensus Mechanisms</h1>
+
+<p>Since there's no central authority, blockchain nodes must <strong>agree</strong> on which transactions are valid and in what order. This agreement process is called a <strong>consensus mechanism</strong>.</p>
+
+<h2>4.1 Proof of Work (PoW)</h2>
+<div class="info-box">
+  <strong>Used by:</strong> Bitcoin, Ethereum (before Sept 2022)
+</div>
+
+<p><strong>How it works:</strong></p>
+<ol>
+  <li>Miners compete to solve a complex mathematical puzzle</li>
+  <li>The puzzle: Find a number (nonce) such that the block's hash starts with a certain number of zeros</li>
+  <li>This requires enormous computational power (trial and error)</li>
+  <li>The first miner to solve it broadcasts the block</li>
+  <li>Other nodes verify the solution (easy to verify, hard to solve)</li>
+  <li>Winner receives a <strong>block reward</strong> (cryptocurrency)</li>
+</ol>
+
+<pre>
+Example PoW puzzle:
+  Find nonce such that:
+  SHA256("block_data" + nonce) → "0000000....."  (starts with 7 zeros)
+
+  Try nonce = 1    → hash = "7f3a8b..."  ✗
+  Try nonce = 2    → hash = "a12c4d..."  ✗
+  Try nonce = 3    → hash = "e9f012..."  ✗
+  ... millions of attempts ...
+  Try nonce = 8392741 → hash = "0000000a8f..." ✓ FOUND!
+</pre>
+
+<div class="warn-box">
+  <strong>Downside:</strong> PoW uses massive amounts of electricity. Bitcoin mining consumes more energy than some countries!
+</div>
+
+<h2>4.2 Proof of Stake (PoS)</h2>
+<div class="info-box">
+  <strong>Used by:</strong> Ethereum (after "The Merge" — Sept 2022), Cardano, Solana
+</div>
+
+<p><strong>How it works:</strong></p>
+<ol>
+  <li>Validators <strong>stake</strong> (lock up) their cryptocurrency as collateral</li>
+  <li>The protocol randomly selects a validator to propose the next block</li>
+  <li>Selection probability is proportional to the amount staked</li>
+  <li>If the validator acts honestly → earns rewards</li>
+  <li>If the validator cheats → loses their staked funds (<strong>slashing</strong>)</li>
+</ol>
+
+<h2>4.3 Comparison Table</h2>
+<table>
+  <tr><th>Feature</th><th>Proof of Work (PoW)</th><th>Proof of Stake (PoS)</th></tr>
+  <tr><td>Energy Usage</td><td>Very high</td><td>Very low (99.95% less)</td></tr>
+  <tr><td>Hardware Needed</td><td>Specialized mining rigs (ASICs)</td><td>Regular computer</td></tr>
+  <tr><td>Security Model</td><td>Cost of attack = cost of hardware</td><td>Cost of attack = cost of staked coins</td></tr>
+  <tr><td>Block Time</td><td>~10 min (Bitcoin)</td><td>~12 sec (Ethereum)</td></tr>
+  <tr><td>Reward</td><td>Block reward + fees</td><td>Transaction fees + tips</td></tr>
+</table>
+
+<h2>4.4 Other Consensus Mechanisms</h2>
+<table>
+  <tr><th>Mechanism</th><th>Description</th><th>Used By</th></tr>
+  <tr><td><strong>DPoS</strong> (Delegated PoS)</td><td>Token holders vote for delegates who validate blocks</td><td>EOS, Tron</td></tr>
+  <tr><td><strong>PoA</strong> (Proof of Authority)</td><td>Pre-approved validators — identity-based</td><td>Private chains, testnets</td></tr>
+  <tr><td><strong>PBFT</strong></td><td>Nodes vote on blocks — needs 2/3 agreement</td><td>Hyperledger</td></tr>
+  <tr><td><strong>PoH</strong> (Proof of History)</td><td>Time-stamped events without waiting for consensus</td><td>Solana</td></tr>
+</table>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 5: CRYPTOGRAPHY -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<h1 id="s5">5. Cryptography in Blockchain</h1>
+
+<p>Blockchain relies heavily on cryptographic techniques for security. Understanding these is essential.</p>
+
+<h2>5.1 Hash Functions</h2>
+<p>A <strong>hash function</strong> takes any input and produces a fixed-size output (the "hash" or "digest"). Blockchain primarily uses <strong>SHA-256</strong> (Bitcoin) and <strong>Keccak-256</strong> (Ethereum).</p>
+
+<h3>Properties of a Good Hash Function:</h3>
+<table>
+  <tr><th>Property</th><th>Meaning</th></tr>
+  <tr><td><strong>Deterministic</strong></td><td>Same input always gives the same output</td></tr>
+  <tr><td><strong>Fast</strong></td><td>Quick to compute</td></tr>
+  <tr><td><strong>Avalanche Effect</strong></td><td>Change 1 bit of input → completely different hash</td></tr>
+  <tr><td><strong>One-Way</strong></td><td>Cannot reverse-engineer the input from the hash</td></tr>
+  <tr><td><strong>Collision-Resistant</strong></td><td>Nearly impossible to find two different inputs with the same hash</td></tr>
+</table>
+
+<pre>
+Example (SHA-256):
+  Input: "Hello"        → Hash: 185f8db32271fe25f561a6...
+  Input: "Hello!"       → Hash: 334d016f755cd6dc58c533...
+  Input: "hello"        → Hash: 2cf24dba5fb0a30e26e83b...
+
+  Tiny changes → completely different hash!
+</pre>
+
+<h2>5.2 Public-Key Cryptography</h2>
+<p>Every blockchain user has a <strong>key pair</strong>:</p>
+
+<div class="diagram">
+  <div class="diagram-title">Key Pair</div>
+  <div class="diagram-row">
+    <div class="diagram-box alt">
+      <strong>Private Key</strong><br/>
+      <small>Secret! Never share.</small><br/>
+      <small>Used to SIGN transactions</small><br/>
+      <small>e.g., 0x4c0883a6...</small>
+    </div>
+    <span class="diagram-arrow">→ generates →</span>
+    <div class="diagram-box green">
+      <strong>Public Key</strong><br/>
+      <small>Share freely</small><br/>
+      <small>Used to VERIFY signatures</small><br/>
+      <small>e.g., 0x04bfcab...</small>
+    </div>
+    <span class="diagram-arrow">→ derives →</span>
+    <div class="diagram-box">
+      <strong>Address</strong><br/>
+      <small>Your "account number"</small><br/>
+      <small>e.g., 0x71C7...3E4b</small>
+    </div>
+  </div>
+</div>
+
+<div class="warn-box">
+  <strong>Critical Rule:</strong> Your <strong>private key</strong> is like your bank password. If someone gets it, they control all your funds forever. There is NO "forgot password" in blockchain!
+</div>
+
+<h2>5.3 Digital Signatures</h2>
+<p>When you send a transaction, you <strong>sign</strong> it with your private key. This proves:</p>
+<ol>
+  <li><strong>Authentication</strong> — You are the owner of the account</li>
+  <li><strong>Integrity</strong> — The transaction hasn't been tampered with</li>
+  <li><strong>Non-repudiation</strong> — You can't deny sending it</li>
+</ol>
+
+<pre>
+Signing Process:
+  1. Create transaction: "Send 1 ETH to 0xBob..."
+  2. Hash the transaction data
+  3. Sign the hash with your private key → Signature
+  4. Broadcast: transaction + signature to the network
+
+Verification Process (by any node):
+  1. Receive transaction + signature
+  2. Use sender's PUBLIC key to verify the signature
+  3. If valid → transaction is authentic ✓
+</pre>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 6: ETHEREUM -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<h1 id="s6">6. Ethereum — The Programmable Blockchain</h1>
+
+<p>While Bitcoin is primarily digital money, <strong>Ethereum</strong> is a <em>general-purpose programmable blockchain</em>. It lets developers deploy programs called <strong>smart contracts</strong> that run automatically.</p>
+
+<h2>6.1 Bitcoin vs Ethereum</h2>
+<table>
+  <tr><th>Feature</th><th>Bitcoin</th><th>Ethereum</th></tr>
+  <tr><td>Purpose</td><td>Digital currency (store of value)</td><td>Platform for decentralized applications</td></tr>
+  <tr><td>Language</td><td>Script (limited)</td><td>Solidity (Turing-complete)</td></tr>
+  <tr><td>Smart Contracts</td><td>Very limited</td><td>Full support</td></tr>
+  <tr><td>Block Time</td><td>~10 minutes</td><td>~12 seconds</td></tr>
+  <tr><td>Consensus</td><td>Proof of Work</td><td>Proof of Stake (since 2022)</td></tr>
+  <tr><td>Native Token</td><td>BTC</td><td>ETH</td></tr>
+</table>
+
+<h2>6.2 Ethereum Virtual Machine (EVM)</h2>
+<p>The <strong>EVM</strong> is the runtime environment for smart contracts on Ethereum. Think of it as a giant, global computer:</p>
+<ul>
+  <li>Every Ethereum node runs the EVM</li>
+  <li>Smart contract code executes identically on every node</li>
+  <li>Results are deterministic — same input always gives the same output</li>
+  <li>The EVM is <strong>sandboxed</strong> — contracts can't access the internet or local files</li>
+</ul>
+
+<div class="diagram">
+  <div class="diagram-title">EVM Execution Flow</div>
+  <div class="diagram-row">
+    <div class="diagram-box">Solidity Code<br/><small>.sol file</small></div>
+    <span class="diagram-arrow">→ compile →</span>
+    <div class="diagram-box alt">Bytecode<br/><small>Machine code</small></div>
+    <span class="diagram-arrow">→ deploy →</span>
+    <div class="diagram-box green">EVM<br/><small>Executes on-chain</small></div>
+    <span class="diagram-arrow">→ result →</span>
+    <div class="diagram-box orange">State Change<br/><small>Updated blockchain</small></div>
+  </div>
+</div>
+
+<h2>6.3 Accounts in Ethereum</h2>
+<table>
+  <tr><th>Account Type</th><th>Description</th><th>Has Code?</th></tr>
+  <tr><td><strong>EOA</strong> (Externally Owned Account)</td><td>Controlled by a private key (you, the human)</td><td>No</td></tr>
+  <tr><td><strong>Contract Account</strong></td><td>Controlled by smart contract code</td><td>Yes</td></tr>
+</table>
+
+<div class="info-box">
+  When you create a MetaMask wallet, you get an <strong>EOA</strong>. When you deploy a smart contract, it gets a <strong>Contract Account</strong> at a specific address.
+</div>
+
+<h2>6.4 Ethereum State</h2>
+<p>Ethereum maintains a <strong>global state</strong> — a mapping of every account address to its:</p>
+<ul>
+  <li><strong>Balance</strong> — amount of ETH</li>
+  <li><strong>Nonce</strong> — number of transactions sent (prevents replays)</li>
+  <li><strong>Storage</strong> — data stored by smart contracts</li>
+  <li><strong>Code</strong> — smart contract bytecode (if contract account)</li>
+</ul>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 7: SMART CONTRACTS & SOLIDITY -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<h1 id="s7">7. Smart Contracts & Solidity</h1>
+
+<h2>7.1 What Is a Smart Contract?</h2>
+<p>A <strong>smart contract</strong> is a self-executing program stored on the blockchain. It runs automatically when predefined conditions are met — no middleman needed.</p>
+
+<div class="example-box">
+  <strong>Real-World Analogy:</strong> A vending machine is a simple smart contract:
+  <ul>
+    <li><strong>Condition:</strong> Insert $2</li>
+    <li><strong>Action:</strong> Dispense a drink</li>
+    <li>No cashier needed. The machine (contract) enforces the rules automatically.</li>
+  </ul>
+</div>
+
+<h2>7.2 Solidity — Ethereum's Programming Language</h2>
+<p><strong>Solidity</strong> is the most popular language for writing smart contracts. Its syntax is similar to JavaScript/C++.</p>
+
+<h3>Basic Structure of a Solidity Contract:</h3>
+<pre>
+// SPDX-License-Identifier: MIT       ← License identifier
+pragma solidity ^0.8.24;              ← Compiler version
+
+contract MyFirstContract {            ← Contract declaration
+
+    // State variables (stored on blockchain permanently)
+    string public message;
+    address public owner;
+    uint256 public count;
+
+    // Constructor — runs ONCE when contract is deployed
+    constructor(string memory _msg) {
+        message = _msg;
+        owner = msg.sender;       // msg.sender = whoever deploys
+    }
+
+    // Function — can be called by anyone
+    function updateMessage(string memory _newMsg) public {
+        message = _newMsg;
+        count += 1;
+    }
+
+    // View function — reads data, no gas cost
+    function getMessage() public view returns (string memory) {
+        return message;
+    }
+}
+</pre>
+
+<h2>7.3 Key Solidity Concepts</h2>
+
+<h3>Data Types:</h3>
+<table>
+  <tr><th>Type</th><th>Description</th><th>Example</th></tr>
+  <tr><td><code>uint256</code></td><td>Unsigned integer (0 to 2²⁵⁶-1)</td><td><code>uint256 age = 25;</code></td></tr>
+  <tr><td><code>int256</code></td><td>Signed integer</td><td><code>int256 temp = -10;</code></td></tr>
+  <tr><td><code>bool</code></td><td>True or false</td><td><code>bool isActive = true;</code></td></tr>
+  <tr><td><code>address</code></td><td>Ethereum address (20 bytes)</td><td><code>address owner = msg.sender;</code></td></tr>
+  <tr><td><code>string</code></td><td>Text string</td><td><code>string name = "Alice";</code></td></tr>
+  <tr><td><code>bytes32</code></td><td>Fixed-size byte array</td><td><code>bytes32 hash = keccak256(...);</code></td></tr>
+  <tr><td><code>mapping</code></td><td>Key-value store (like a dictionary)</td><td><code>mapping(address => uint) balances;</code></td></tr>
+</table>
+
+<h3>Function Visibility:</h3>
+<table>
+  <tr><th>Keyword</th><th>Who Can Call It?</th></tr>
+  <tr><td><code>public</code></td><td>Anyone (external users + other contracts + internally)</td></tr>
+  <tr><td><code>external</code></td><td>Only from outside the contract</td></tr>
+  <tr><td><code>internal</code></td><td>Only from this contract + derived contracts</td></tr>
+  <tr><td><code>private</code></td><td>Only from this contract</td></tr>
+</table>
+
+<h3>Function Modifiers:</h3>
+<table>
+  <tr><th>Modifier</th><th>Meaning</th></tr>
+  <tr><td><code>view</code></td><td>Reads state but doesn't modify it (free, no gas)</td></tr>
+  <tr><td><code>pure</code></td><td>Doesn't read or modify state (free, no gas)</td></tr>
+  <tr><td><code>payable</code></td><td>Can receive ETH along with the call</td></tr>
+</table>
+
+<h2>7.4 Events</h2>
+<p>Events are logs emitted by smart contracts. They're stored on-chain but are NOT accessible from within contracts — they're designed for off-chain applications (like your frontend) to listen for changes.</p>
+
+<pre>
+// Declaring an event
+event CertificateIssued(
+    bytes32 indexed certId,
+    address indexed issuer,
+    address indexed recipient,
+    string ipfsCid
+);
+
+// Emitting the event inside a function
+emit CertificateIssued(certId, msg.sender, _recipient, _ipfsCid);
+</pre>
+
+<div class="info-box">
+  The <code>indexed</code> keyword allows you to filter events by those fields — like searching for "all certificates issued by address 0x123..."
+</div>
+
+<h2>7.5 Modifiers (Access Control)</h2>
+<p>Custom modifiers restrict who can call certain functions:</p>
+
+<pre>
+modifier onlyOwner() {
+    require(msg.sender == owner, "Only owner can call this");
+    _;    // ← this is where the function body executes
+}
+
+modifier onlyIssuer() {
+    require(authorisedIssuers[msg.sender], "Not an authorised issuer");
+    _;
+}
+
+// Usage:
+function addIssuer(address _issuer) external onlyOwner {
+    authorisedIssuers[_issuer] = true;
+}
+</pre>
+
+<h2>7.6 Real Example — Certificate Verification Contract</h2>
+<pre>
+contract CertificateVerification {
+
+    enum CertStatus { None, Active, Revoked }
+
+    struct Certificate {
+        bytes32 certHash;       // keccak256 hash of the PDF
+        string  ipfsCid;        // IPFS content identifier
+        address issuer;         // university address
+        address recipient;      // student wallet
+        string  studentName;
+        string  courseName;
+        uint256 issuedAt;
+        CertStatus status;
+    }
+
+    mapping(bytes32 => Certificate) public certificates;
+    mapping(address => bool) public authorisedIssuers;
+
+    function issueCertificate(...) external onlyIssuer {
+        // Creates a certificate record on-chain
+    }
+
+    function verifyCertificate(bytes32 _certId)
+        external view returns (bool valid, ...) {
+        // Anyone can verify — it's a VIEW function (free!)
+    }
+
+    function revokeCertificate(bytes32 _certId) external onlyIssuer {
+        // Only the original issuer can revoke
+    }
+}
+</pre>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 8: HARDHAT -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<h1 id="s8">8. Hardhat — Development Framework</h1>
+
+<h2>8.1 What Is Hardhat?</h2>
+<p><strong>Hardhat</strong> is the most popular development environment for building Ethereum smart contracts. It provides:</p>
+<ul>
+  <li><strong>Local blockchain</strong> — a simulated Ethereum network on your computer</li>
+  <li><strong>Compiler</strong> — compiles Solidity to EVM bytecode</li>
+  <li><strong>Testing framework</strong> — write and run automated tests</li>
+  <li><strong>Deployment scripts</strong> — automate contract deployment</li>
+  <li><strong>Debugging tools</strong> — stack traces and console.log in Solidity</li>
+</ul>
+
+<h2>8.2 Hardhat Project Structure</h2>
+<pre>
+my-project/
+├── contracts/              ← Solidity smart contracts
+│   └── MyContract.sol
+├── scripts/                ← Deployment & utility scripts
+│   └── deploy.js
+├── test/                   ← Automated tests
+│   └── MyContract.test.js
+├── artifacts/              ← Compiled contract output (ABI + bytecode)
+├── cache/                  ← Compiler cache
+├── hardhat.config.js       ← Hardhat configuration
+└── package.json
+</pre>
+
+<h2>8.3 Hardhat Configuration</h2>
+<pre>
+// hardhat.config.js
+require("@nomicfoundation/hardhat-toolbox");
+
+module.exports = {
+  solidity: "0.8.24",              // Solidity compiler version
+  networks: {
+    hardhat: {},                    // Built-in local network
+    localhost: {
+      url: "http://127.0.0.1:8545" // Connect to running node
+    },
+    sepolia: {                      // Ethereum testnet
+      url: process.env.SEPOLIA_RPC_URL,
+      accounts: [process.env.PRIVATE_KEY]
+    }
+  }
+};
+</pre>
+
+<h2>8.4 Essential Hardhat Commands</h2>
+<table>
+  <tr><th>Command</th><th>What It Does</th></tr>
+  <tr><td><code>npx hardhat compile</code></td><td>Compiles all .sol files → generates ABI + bytecode in artifacts/</td></tr>
+  <tr><td><code>npx hardhat test</code></td><td>Runs all test files</td></tr>
+  <tr><td><code>npx hardhat node</code></td><td>Starts a local blockchain at localhost:8545 (with 20 test accounts)</td></tr>
+  <tr><td><code>npx hardhat run scripts/deploy.js --network localhost</code></td><td>Deploys contract to the local blockchain</td></tr>
+  <tr><td><code>npx hardhat run scripts/deploy.js --network sepolia</code></td><td>Deploys to Sepolia testnet (real Ethereum test network)</td></tr>
+</table>
+
+<h2>8.5 The Hardhat Local Blockchain</h2>
+<p>When you run <code>npx hardhat node</code>, Hardhat creates a fake Ethereum blockchain on your computer:</p>
+
+<div class="example-box">
+  <strong>What you get:</strong>
+  <ul>
+    <li><strong>20 test accounts</strong> — each pre-funded with 10,000 fake ETH</li>
+    <li><strong>Instant mining</strong> — transactions confirm immediately</li>
+    <li><strong>No real money</strong> — everything is simulated</li>
+    <li><strong>Runs at:</strong> http://127.0.0.1:8545</li>
+    <li><strong>Reset on restart</strong> — all data is lost when you stop the node</li>
+  </ul>
+</div>
+
+<h2>8.6 What Is an ABI?</h2>
+<p><strong>ABI</strong> (Application Binary Interface) is a JSON description of your contract's functions. It tells the frontend HOW to communicate with the contract.</p>
+
+<pre>
+// ABI defines what functions exist and their parameters:
+[
+  "function issueCertificate(bytes32 _certHash, string _ipfsCid, address _recipient, string _studentName, string _courseName) returns (bytes32)",
+  "function verifyCertificate(bytes32 _certId) view returns (bool valid, string studentName, ...)",
+  "event CertificateIssued(bytes32 indexed certId, address indexed issuer, ...)"
+]
+</pre>
+
+<div class="info-box">
+  <strong>Think of ABI like a restaurant menu</strong> — it tells you what functions are available, what inputs they need, and what they return. Without the ABI, the frontend can't talk to the contract.
+</div>
+
+<h2>8.7 Deployment Script</h2>
+<pre>
+// scripts/deploy.js
+const { ethers } = require("hardhat");
+
+async function main() {
+  // Get the contract factory (compiled code)
+  const CertVerification = await ethers.getContractFactory(
+    "CertificateVerification"
+  );
+
+  // Deploy it to the blockchain
+  const contract = await CertVerification.deploy();
+  await contract.waitForDeployment();
+
+  // Get the deployed address
+  const address = await contract.getAddress();
+  console.log("Contract deployed to:", address);
+}
+
+main().catch(console.error);
+</pre>
+
+<h2>8.8 Writing Tests</h2>
+<pre>
+const { expect } = require("chai");
+const { ethers } = require("hardhat");
+
+describe("CertificateVerification", function () {
+  let contract, owner, issuer, student;
+
+  beforeEach(async function () {
+    [owner, issuer, student] = await ethers.getSigners();
+    const Factory = await ethers.getContractFactory("CertificateVerification");
+    contract = await Factory.deploy();
+    await contract.addIssuer(issuer.address);
+  });
+
+  it("should allow issuer to issue a certificate", async function () {
+    const tx = await contract.connect(issuer).issueCertificate(
+      ethers.keccak256("0x1234"),
+      "QmTestCid123",
+      student.address,
+      "Alice",
+      "Computer Science"
+    );
+    expect(tx).to.emit(contract, "CertificateIssued");
+  });
+});
+</pre>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 9: METAMASK -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<h1 id="s9">9. MetaMask — Your Crypto Wallet</h1>
+
+<h2>9.1 What Is MetaMask?</h2>
+<p><strong>MetaMask</strong> is a browser extension (Chrome/Firefox/Brave) that serves as your Ethereum wallet and gateway to blockchain applications. It:</p>
+<ul>
+  <li>Stores your <strong>private keys</strong> securely in your browser</li>
+  <li><strong>Signs transactions</strong> on your behalf</li>
+  <li>Connects to <strong>DApps</strong> (decentralized applications)</li>
+  <li>Lets you <strong>switch between networks</strong> (mainnet, testnets, local)</li>
+</ul>
+
+<h2>9.2 MetaMask Concepts</h2>
+
+<h3>Seed Phrase (Recovery Phrase)</h3>
+<div class="warn-box">
+  When you create a MetaMask wallet, you receive a <strong>12-word seed phrase</strong>. This is the MASTER KEY to all your accounts. If you lose it, you lose access forever. Write it down on paper — never store it digitally.
+  <pre>
+Example: apple banana cherry dragon elephant fountain grape
+         hotel igloo jungle kangaroo lemon
+  </pre>
+</div>
+
+<h3>Account Structure</h3>
+<pre>
+Seed Phrase (12 words)
+  └── generates → Private Key #1 → Public Key #1 → Address #1 (Account 1)
+  └── generates → Private Key #2 → Public Key #2 → Address #2 (Account 2)
+  └── ... infinite accounts from one seed phrase
+</pre>
+
+<h2>9.3 Setting Up MetaMask for Development</h2>
+
+<h3>Step 1: Install MetaMask</h3>
+<ol>
+  <li>Go to <strong>metamask.io</strong> and install the browser extension</li>
+  <li>Create a new wallet (save your seed phrase!)</li>
+</ol>
+
+<h3>Step 2: Add Hardhat Local Network</h3>
+<table>
+  <tr><th>Setting</th><th>Value</th></tr>
+  <tr><td>Network Name</td><td>Hardhat Local</td></tr>
+  <tr><td>RPC URL</td><td>http://127.0.0.1:8545</td></tr>
+  <tr><td>Chain ID</td><td>31337</td></tr>
+  <tr><td>Currency Symbol</td><td>ETH</td></tr>
+</table>
+
+<h3>Step 3: Import a Hardhat Test Account</h3>
+<ol>
+  <li>When you run <code>npx hardhat node</code>, it shows 20 accounts with private keys</li>
+  <li>Copy one of the private keys</li>
+  <li>In MetaMask → Import Account → Paste the private key</li>
+  <li>You now have 10,000 test ETH!</li>
+</ol>
+
+<h2>9.4 How MetaMask Connects to DApps</h2>
+
+<div class="diagram">
+  <div class="diagram-title">MetaMask Connection Flow</div>
+  <div class="diagram-row">
+    <div class="diagram-box">User clicks<br/>"Connect Wallet"</div>
+    <span class="diagram-arrow">→</span>
+    <div class="diagram-box alt">MetaMask popup<br/>"Allow this site?"</div>
+    <span class="diagram-arrow">→</span>
+    <div class="diagram-box green">User approves</div>
+    <span class="diagram-arrow">→</span>
+    <div class="diagram-box orange">DApp gets user's<br/>public address</div>
+  </div>
+</div>
+
+<h3>Code Example — Connecting MetaMask:</h3>
+<pre>
+// Check if MetaMask is installed
+if (typeof window.ethereum !== "undefined") {
+    // Request account access
+    const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts"
+    });
+
+    const userAddress = accounts[0];
+    console.log("Connected:", userAddress);
+    // e.g., "0x71C7656EC7ab88b098defB751B7401B5f6d8976F"
+}
+</pre>
+
+<h2>9.5 Transaction Signing with MetaMask</h2>
+<p>When your DApp wants to write to the blockchain (e.g., issue a certificate):</p>
+<ol>
+  <li>DApp creates the transaction details</li>
+  <li>MetaMask shows a popup: "Confirm Transaction — Gas: 0.003 ETH"</li>
+  <li>User clicks <strong>Confirm</strong></li>
+  <li>MetaMask signs the transaction with the user's private key</li>
+  <li>Transaction is sent to the blockchain</li>
+</ol>
+
+<div class="info-box">
+  <strong>MetaMask never reveals your private key</strong> to the website! The signing happens inside MetaMask. The DApp only receives the signed transaction.
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 10: IPFS -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<h1 id="s10">10. IPFS — Decentralized File Storage</h1>
+
+<h2>10.1 The Problem</h2>
+<p>Storing files (PDFs, images, documents) directly on the blockchain is <strong>extremely expensive</strong>. Storing just 1 KB of data on Ethereum costs several dollars in gas fees. A 1 MB PDF would cost thousands of dollars!</p>
+
+<div class="info-box">
+  <strong>Solution:</strong> Store the file on <strong>IPFS</strong> and only store the file's <strong>hash/CID</strong> on the blockchain (just 32 bytes — very cheap).
+</div>
+
+<h2>10.2 What Is IPFS?</h2>
+<p><strong>IPFS</strong> (InterPlanetary File System) is a decentralized, peer-to-peer file storage system. Unlike traditional web hosting:</p>
+
+<table>
+  <tr><th>Traditional Web (HTTP)</th><th>IPFS</th></tr>
+  <tr><td><strong>Location-based:</strong> "Get file from server at example.com"</td><td><strong>Content-based:</strong> "Get file with hash QmXyz..."</td></tr>
+  <tr><td>Server goes down → file gone</td><td>File exists on any node that has it</td></tr>
+  <tr><td>Server owner can modify the file</td><td>Content is immutable (hash changes if file changes)</td></tr>
+  <tr><td>Centralized — single point of failure</td><td>Decentralized — distributed across nodes</td></tr>
+</table>
+
+<h2>10.3 Content Identifier (CID)</h2>
+<p>Every file uploaded to IPFS gets a unique <strong>CID</strong> (Content Identifier) — a hash of the file's content.</p>
+
+<pre>
+Upload "certificate.pdf" to IPFS:
+
+  CID = "QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco"
+
+Access it via gateway:
+  https://gateway.pinata.cloud/ipfs/QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco
+
+Key Properties:
+  ✓ Same file → always same CID
+  ✓ Different file → different CID
+  ✓ Cannot modify the file at this CID
+  ✓ Anyone with the CID can access the file
+</pre>
+
+<h2>10.4 Pinata — IPFS Pinning Service</h2>
+<p><strong>Pinata</strong> is a popular IPFS pinning service. Since IPFS nodes can remove unpopular files (garbage collection), you need a pinning service to ensure your files stay available permanently.</p>
+
+<h3>How Pinata Works:</h3>
+<div class="flow-step">
+  <span class="step-num">1.</span> You upload a file to Pinata via their API
+</div>
+<div class="arrow">↓</div>
+<div class="flow-step">
+  <span class="step-num">2.</span> Pinata stores it on their IPFS nodes and <strong>pins</strong> it (prevents garbage collection)
+</div>
+<div class="arrow">↓</div>
+<div class="flow-step">
+  <span class="step-num">3.</span> Pinata returns the CID
+</div>
+<div class="arrow">↓</div>
+<div class="flow-step">
+  <span class="step-num">4.</span> Anyone can access the file via: <code>https://gateway.pinata.cloud/ipfs/{CID}</code>
+</div>
+
+<h3>Code Example — Uploading to IPFS via Pinata:</h3>
+<pre>
+import axios from "axios";
+
+async function uploadToIPFS(fileBuffer, fileName) {
+  const formData = new FormData();
+  formData.append("file", new Blob([fileBuffer]), fileName);
+  formData.append("pinataMetadata", JSON.stringify({ name: fileName }));
+
+  const response = await axios.post(
+    "https://api.pinata.cloud/pinning/pinFileToIPFS",
+    formData,
+    {
+      headers: {
+        pinata_api_key: "YOUR_API_KEY",
+        pinata_secret_api_key: "YOUR_SECRET_KEY",
+      },
+    }
+  );
+
+  return response.data.IpfsHash; // This is the CID
+}
+</pre>
+
+<h2>10.5 IPFS in Blockchain Architecture</h2>
+
+<div class="diagram">
+  <div class="diagram-title">Why We Combine IPFS + Blockchain</div>
+  <pre>
+  ┌────────────────────┐     ┌────────────────────────┐
+  │     BLOCKCHAIN     │     │         IPFS           │
+  │                    │     │                        │
+  │  Stores:           │     │  Stores:               │
+  │  • Certificate ID  │     │  • Actual PDF file     │
+  │  • PDF Hash        │◄───►│  • Images              │
+  │  • IPFS CID  ──────┼────►│  • Documents           │
+  │  • Issuer address  │     │                        │
+  │  • Student address │     │  Access via:           │
+  │  • Timestamp       │     │  gateway/ipfs/{CID}    │
+  │                    │     │                        │
+  │  Cost: pennies     │     │  Cost: free/cheap      │
+  └────────────────────┘     └────────────────────────┘
+
+  Blockchain = proof & metadata (small, expensive storage)
+  IPFS       = actual files      (large, cheap storage)
+  </pre>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 11: DATABASES IN BLOCKCHAIN PROJECTS -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<h1 id="s11">11. Databases in Blockchain Projects</h1>
+
+<h2>11.1 Why Use a Database When You Have Blockchain?</h2>
+<p>This is a common question! The answer: <strong>blockchain is not good for everything</strong>.</p>
+
+<table>
+  <tr><th>Task</th><th>Best Tool</th><th>Why</th></tr>
+  <tr><td>Store permanent proof</td><td>Blockchain</td><td>Immutable, decentralized, trustless</td></tr>
+  <tr><td>Search & filter records</td><td>Database</td><td>Fast queries, indexing, SQL support</td></tr>
+  <tr><td>Store user profiles</td><td>Database</td><td>Needs to be updatable, private</td></tr>
+  <tr><td>Store large files</td><td>IPFS</td><td>Cheap, content-addressed storage</td></tr>
+  <tr><td>Track verification logs</td><td>Database</td><td>Blockchain doesn't log who verified what</td></tr>
+</table>
+
+<h2>11.2 The Three-Layer Storage Pattern</h2>
+
+<div class="diagram">
+  <div class="diagram-title">Optimal Data Storage Strategy</div>
+  <div class="diagram-row">
+    <div class="diagram-box">Blockchain<br/><small>Trust & Proof</small><br/><small>Hashes, timestamps</small></div>
+    <div class="diagram-box alt">IPFS<br/><small>File Storage</small><br/><small>PDFs, images</small></div>
+    <div class="diagram-box green">PostgreSQL<br/><small>App Data</small><br/><small>Search, filter, UI</small></div>
+  </div>
+</div>
+
+<h2>11.3 PostgreSQL + Prisma ORM</h2>
+<p>In modern blockchain projects, <strong>PostgreSQL</strong> is commonly used as the off-chain database, accessed through <strong>Prisma ORM</strong> (Object-Relational Mapping).</p>
+
+<h3>Prisma Schema Example:</h3>
+<pre>
+// prisma/schema.prisma
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Certificate {
+  id            String   @id @default(cuid())
+  certId        String   @unique    // blockchain certificate ID
+  certHash      String              // keccak256 hash
+  ipfsCid       String              // IPFS content identifier
+  studentName   String
+  studentEmail  String
+  courseName    String
+  issuerAddress String
+  recipientAddr String
+  status        String   @default("Active")
+  issuedAt      DateTime @default(now())
+}
+
+model Institution {
+  id      String @id @default(cuid())
+  name    String
+  address String @unique   // wallet address
+}
+</pre>
+
+<div class="info-box">
+  <strong>Key insight:</strong> The database stores the SAME data as the blockchain for convenience (fast queries, search, UI display), but the blockchain version is the <strong>source of truth</strong>. If the database is deleted, the blockchain still has the permanent proof.
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 12: WEB3 & ETHERS.JS -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<h1 id="s12">12. Web3 & Ethers.js — Connecting Frontend to Blockchain</h1>
+
+<h2>12.1 What Is Web3?</h2>
+<p><strong>Web3</strong> refers to the decentralized version of the internet, where applications interact with blockchain instead of centralized servers. But it's also the name of JavaScript libraries that let you talk to Ethereum.</p>
+
+<h3>Evolution of the Web:</h3>
+<table>
+  <tr><th>Era</th><th>Description</th><th>Example</th></tr>
+  <tr><td><strong>Web 1.0</strong></td><td>Read-only websites</td><td>Static HTML pages, Wikipedia</td></tr>
+  <tr><td><strong>Web 2.0</strong></td><td>Read-write (user content)</td><td>Facebook, YouTube, Instagram</td></tr>
+  <tr><td><strong>Web 3.0</strong></td><td>Read-write-own (decentralized)</td><td>DeFi, NFTs, DAOs</td></tr>
+</table>
+
+<h2>12.2 Ethers.js — The Bridge</h2>
+<p><strong>Ethers.js</strong> is the most popular JavaScript library for interacting with Ethereum. It's the bridge between your web frontend and the blockchain.</p>
+
+<h3>Key Ethers.js Concepts:</h3>
+
+<h4>Provider — Read Blockchain Data</h4>
+<pre>
+import { ethers } from "ethers";
+
+// Connect to a blockchain node (read-only)
+const provider = new ethers.JsonRpcProvider("http://127.0.0.1:8545");
+
+// Read blockchain data
+const blockNumber = await provider.getBlockNumber();
+const balance = await provider.getBalance("0x71C7...");
+</pre>
+
+<h4>Signer — Write to Blockchain</h4>
+<pre>
+// Connect to MetaMask (user can sign transactions)
+const browserProvider = new ethers.BrowserProvider(window.ethereum);
+await browserProvider.send("eth_requestAccounts", []);
+const signer = await browserProvider.getSigner();
+
+// signer can now send transactions
+const tx = await signer.sendTransaction({
+  to: "0xRecipientAddress...",
+  value: ethers.parseEther("1.0")  // Send 1 ETH
+});
+</pre>
+
+<h4>Contract — Interact with Smart Contracts</h4>
+<pre>
+// Read-only contract (no wallet needed)
+const readContract = new ethers.Contract(
+  contractAddress,
+  contractABI,
+  provider
+);
+const result = await readContract.verifyCertificate(certId);
+
+// Write contract (needs MetaMask signer)
+const writeContract = new ethers.Contract(
+  contractAddress,
+  contractABI,
+  signer
+);
+const tx = await writeContract.issueCertificate(
+  certHash, ipfsCid, recipient, name, course
+);
+await tx.wait(); // Wait for mining confirmation
+</pre>
+
+<div class="diagram">
+  <div class="diagram-title">Provider vs Signer vs Contract</div>
+  <pre>
+  Provider (Read-Only)         Signer (Read + Write)
+  ┌──────────────┐            ┌──────────────┐
+  │ JsonRpcProvider│           │ MetaMask      │
+  │              │            │ BrowserProvider│
+  │ Can:         │            │              │
+  │ • Read blocks│            │ Can:         │
+  │ • Get balance│            │ • Everything │
+  │ • Call view  │            │   provider   │
+  │   functions  │            │   can do     │
+  │              │            │ • PLUS sign  │
+  │ Cannot:      │            │   & send     │
+  │ • Send TX    │            │   transactions│
+  └──────┬───────┘            └──────┬───────┘
+         │                           │
+         └─────────┬─────────────────┘
+                   │
+            ┌──────┴──────┐
+            │  Contract   │
+            │ Instance    │
+            │             │
+            │ Wraps ABI + │
+            │ Address +   │
+            │ Provider or │
+            │ Signer      │
+            └─────────────┘
+  </pre>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 13: DAPP ARCHITECTURE -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<h1 id="s13">13. DApp Architecture — Full Stack Flow</h1>
+
+<h2>13.1 What Is a DApp?</h2>
+<p>A <strong>DApp</strong> (Decentralized Application) is a web application where at least the backend logic runs on a blockchain instead of a centralized server.</p>
+
+<h2>13.2 Complete Architecture Diagram</h2>
+
+<div class="diagram">
+  <div class="diagram-title">Full-Stack Blockchain DApp Architecture</div>
+  <pre>
+┌─────────────────────────────────────────────────────────────┐
+│                      USER'S BROWSER                         │
+│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐  │
+│  │  Next.js     │    │  MetaMask    │    │  Ethers.js   │  │
+│  │  Frontend    │◄──►│  Wallet      │◄──►│  Library     │  │
+│  │  (React UI)  │    │  Extension   │    │  (JS Bridge) │  │
+│  └──────┬───────┘    └──────────────┘    └──────┬───────┘  │
+│         │                                       │          │
+└─────────┼───────────────────────────────────────┼──────────┘
+          │ API calls                             │ RPC calls
+          ▼                                       ▼
+┌──────────────────┐                    ┌──────────────────┐
+│  Next.js API     │                    │  Blockchain      │
+│  Routes          │                    │  Network         │
+│  (Server-side)   │                    │  (Hardhat /      │
+│                  │                    │   Ethereum)      │
+│  • /api/certs    │───────────────────►│                  │
+│  • /api/verify   │   Smart Contract   │  Contract at     │
+│  • /api/issue    │       Calls        │  0x5Fb...        │
+└────────┬─────────┘                    └──────────────────┘
+         │
+    ┌────┴──────┐
+    ▼           ▼
+┌─────────┐ ┌─────────┐
+│PostgreSQL│ │ Pinata  │
+│Database  │ │ (IPFS)  │
+│          │ │         │
+│Searchable│ │File     │
+│records   │ │storage  │
+└──────────┘ └─────────┘
+  </pre>
+</div>
+
+<h2>13.3 Data Flow — Issuing a Certificate</h2>
+
+<div class="flow-step">
+  <span class="step-num">Step 1 — Frontend (Browser)</span>
+  <p>User fills in student details and uploads a PDF certificate file. Clicks "Issue Certificate".</p>
+</div>
+<div class="arrow">↓</div>
+
+<div class="flow-step">
+  <span class="step-num">Step 2 — Next.js API (Server)</span>
+  <p>The API route receives the form data and:</p>
+  <ul>
+    <li>Reads the PDF as raw bytes</li>
+    <li>Computes <code>certHash = keccak256(pdfBytes)</code> — a unique fingerprint</li>
+    <li>Uploads the PDF to Pinata (IPFS) → gets back a <strong>CID</strong></li>
+    <li>Saves a preliminary record in PostgreSQL</li>
+    <li>Returns the certHash and CID to the frontend</li>
+  </ul>
+</div>
+<div class="arrow">↓</div>
+
+<div class="flow-step">
+  <span class="step-num">Step 3 — MetaMask Transaction (Browser)</span>
+  <p>The frontend calls the smart contract's <code>issueCertificate()</code> function via Ethers.js:</p>
+  <ul>
+    <li>MetaMask popup appears: "Confirm transaction? Gas: 0.003 ETH"</li>
+    <li>User clicks <strong>Confirm</strong></li>
+    <li>MetaMask signs and sends the transaction to the blockchain</li>
+  </ul>
+</div>
+<div class="arrow">↓</div>
+
+<div class="flow-step">
+  <span class="step-num">Step 4 — Blockchain (Smart Contract)</span>
+  <p>The <code>issueCertificate()</code> function executes on-chain:</p>
+  <ul>
+    <li>Checks: Is the caller an authorized issuer?</li>
+    <li>Creates a Certificate struct with all details</li>
+    <li>Stores it permanently in the contract's storage</li>
+    <li>Emits a <code>CertificateIssued</code> event</li>
+    <li>Returns a unique <code>certId</code></li>
+  </ul>
+</div>
+<div class="arrow">↓</div>
+
+<div class="flow-step">
+  <span class="step-num">Step 5 — Confirmation (Frontend)</span>
+  <p>Frontend receives the confirmed transaction receipt, extracts the <code>certId</code> from the event, and updates the PostgreSQL record from "pending" to "Active".</p>
+</div>
+
+<h2>13.4 Data Flow — Verifying a Certificate</h2>
+
+<div class="flow-step">
+  <span class="step-num">1.</span> Employer uploads the PDF to the verification page
+</div>
+<div class="arrow">↓</div>
+<div class="flow-step">
+  <span class="step-num">2.</span> System computes <code>keccak256(pdfBytes)</code> = hash
+</div>
+<div class="arrow">↓</div>
+<div class="flow-step">
+  <span class="step-num">3.</span> Calls <code>contract.verifyCertificateByHash(hash)</code> — a <strong>free</strong> view call
+</div>
+<div class="arrow">↓</div>
+<div class="flow-step">
+  <span class="step-num">4.</span> Blockchain returns: <span class="highlight">VALID</span> or <span class="highlight">INVALID</span> + certificate details
+</div>
+
+<div class="info-box">
+  <strong>Verification is FREE!</strong> Because it's a <code>view</code> function — it only reads data, doesn't modify the blockchain, so no gas is needed.
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 14: TOKENS -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<h1 id="s14">14. Tokens — ERC-20 & ERC-721 (NFTs)</h1>
+
+<h2>14.1 What Are Tokens?</h2>
+<p>Tokens are digital assets created using smart contracts on Ethereum. They are NOT the same as ETH — they are built ON TOP of Ethereum.</p>
+
+<h2>14.2 ERC-20 — Fungible Tokens</h2>
+<p><strong>Fungible</strong> = each token is identical and interchangeable (like dollar bills).</p>
+<ul>
+  <li><strong>Examples:</strong> USDT, USDC, LINK, UNI</li>
+  <li>Used for: cryptocurrencies, stablecoins, governance tokens</li>
+</ul>
+
+<h3>ERC-20 Standard Functions:</h3>
+<pre>
+interface IERC20 {
+    function totalSupply() external view returns (uint256);
+    function balanceOf(address account) external view returns (uint256);
+    function transfer(address to, uint256 amount) external returns (bool);
+    function approve(address spender, uint256 amount) external returns (bool);
+    function transferFrom(address from, address to, uint256 amount) external returns (bool);
+    function allowance(address owner, address spender) external view returns (uint256);
+}
+</pre>
+
+<h2>14.3 ERC-721 — Non-Fungible Tokens (NFTs)</h2>
+<p><strong>Non-Fungible</strong> = each token is unique (like a painting).</p>
+<ul>
+  <li><strong>Examples:</strong> CryptoPunks, Bored Ape Yacht Club, digital art</li>
+  <li>Each NFT has a unique <strong>tokenId</strong></li>
+  <li>Used for: digital art, certificates, gaming items, real estate deeds</li>
+</ul>
+
+<div class="info-box">
+  <strong>Certificates as NFTs:</strong> Some projects issue academic certificates as ERC-721 NFTs — each certificate is unique and permanently owned by the student's wallet address.
+</div>
+
+<h2>14.4 Comparison</h2>
+<table>
+  <tr><th>Feature</th><th>ERC-20 (Fungible)</th><th>ERC-721 (NFT)</th></tr>
+  <tr><td>Uniqueness</td><td>All tokens are identical</td><td>Each token is unique</td></tr>
+  <tr><td>Divisible</td><td>Yes (e.g., 0.5 USDT)</td><td>No (you can't own half an NFT)</td></tr>
+  <tr><td>Use Case</td><td>Currency, utility tokens</td><td>Art, certificates, collectibles</td></tr>
+  <tr><td>Example</td><td>1 USDT = 1 USDT</td><td>CryptoPunk #1234 ≠ CryptoPunk #5678</td></tr>
+</table>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 15: GAS & FEES -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<h1 id="s15">15. Gas & Transaction Fees</h1>
+
+<h2>15.1 What Is Gas?</h2>
+<p><strong>Gas</strong> is a unit that measures the computational effort required to execute operations on Ethereum. Every operation (storing data, computing, transferring) costs a specific amount of gas.</p>
+
+<h2>15.2 Gas Fee Calculation</h2>
+<pre>
+Transaction Fee = Gas Used × Gas Price
+
+Where:
+  • Gas Used     = how much computation your transaction needed
+  • Gas Price    = how much you pay per unit of gas (in Gwei)
+  • 1 Gwei       = 0.000000001 ETH (1 billionth of an ETH)
+
+Example:
+  Gas Used  = 21,000 (simple ETH transfer)
+  Gas Price = 30 Gwei
+  Fee       = 21,000 × 30 Gwei = 630,000 Gwei = 0.00063 ETH ≈ $1.26
+</pre>
+
+<h2>15.3 EIP-1559 Fee Structure (Current)</h2>
+<p>Since the London upgrade, Ethereum uses a two-part fee system:</p>
+<table>
+  <tr><th>Component</th><th>Description</th></tr>
+  <tr><td><strong>Base Fee</strong></td><td>Set by the network, burned (destroyed). Adjusts based on network congestion.</td></tr>
+  <tr><td><strong>Priority Fee (Tip)</strong></td><td>Extra payment to the validator — incentive to include your transaction faster.</td></tr>
+</table>
+
+<pre>
+Total Fee = Gas Used × (Base Fee + Priority Fee)
+</pre>
+
+<h2>15.4 Gas Costs for Common Operations</h2>
+<table>
+  <tr><th>Operation</th><th>Approximate Gas</th></tr>
+  <tr><td>Simple ETH transfer</td><td>21,000</td></tr>
+  <tr><td>ERC-20 token transfer</td><td>~65,000</td></tr>
+  <tr><td>Deploy a contract</td><td>~500,000 – 5,000,000</td></tr>
+  <tr><td>Store 32 bytes (one slot)</td><td>20,000 (new) / 5,000 (update)</td></tr>
+  <tr><td>Call a view function</td><td><strong>0 (FREE!)</strong></td></tr>
+</table>
+
+<div class="key-box">
+  <strong>Important:</strong> On the Hardhat local network, gas still exists but it's <strong>free fake ETH</strong> — so you don't pay real money during development.
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 16: TESTNETS & DEPLOYMENT -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<h1 id="s16">16. Testnets & Deployment</h1>
+
+<h2>16.1 Deployment Stages</h2>
+
+<div class="diagram">
+  <div class="diagram-title">From Development to Production</div>
+  <div class="diagram-row">
+    <div class="diagram-box">Local<br/>(Hardhat)<br/><small>Free, instant</small></div>
+    <span class="diagram-arrow">→</span>
+    <div class="diagram-box alt">Testnet<br/>(Sepolia)<br/><small>Free, public</small></div>
+    <span class="diagram-arrow">→</span>
+    <div class="diagram-box green">Mainnet<br/>(Ethereum)<br/><small>Real money!</small></div>
+  </div>
+</div>
+
+<h2>16.2 Ethereum Testnets</h2>
+<table>
+  <tr><th>Testnet</th><th>Status</th><th>Notes</th></tr>
+  <tr><td><strong>Sepolia</strong></td><td>Active (recommended)</td><td>Primary test network. Get free test ETH from faucets.</td></tr>
+  <tr><td><strong>Holesky</strong></td><td>Active</td><td>Newer testnet designed for staking/infrastructure testing.</td></tr>
+  <tr><td><strong>Goerli</strong></td><td>Deprecated</td><td>Was the main testnet, shut down in 2024.</td></tr>
+</table>
+
+<h2>16.3 Getting Test ETH</h2>
+<ol>
+  <li>Go to a <strong>Sepolia faucet</strong> (e.g., sepoliafaucet.com)</li>
+  <li>Enter your MetaMask wallet address</li>
+  <li>Receive free test ETH (usually 0.5 ETH per request)</li>
+  <li>Use this ETH to deploy contracts and test transactions</li>
+</ol>
+
+<h2>16.4 Deploying to a Testnet</h2>
+<pre>
+# 1. Set environment variables
+export SEPOLIA_RPC_URL="https://eth-sepolia.g.alchemy.com/v2/YOUR_KEY"
+export PRIVATE_KEY="0xYourPrivateKey..."
+
+# 2. Deploy
+npx hardhat run scripts/deploy.js --network sepolia
+
+# Output: Contract deployed to: 0x1234abcd...
+</pre>
+
+<div class="warn-box">
+  <strong>Never commit private keys to Git!</strong> Use a <code>.env</code> file and add it to <code>.gitignore</code>.
+</div>
+
+<h2>16.5 RPC Providers</h2>
+<p>To interact with public Ethereum networks, you need an <strong>RPC provider</strong> — a service that gives you access to an Ethereum node.</p>
+<table>
+  <tr><th>Provider</th><th>Free Tier?</th><th>Description</th></tr>
+  <tr><td><strong>Alchemy</strong></td><td>Yes</td><td>Most popular. Great dashboard and APIs.</td></tr>
+  <tr><td><strong>Infura</strong></td><td>Yes</td><td>By ConsenSys. Well-established.</td></tr>
+  <tr><td><strong>QuickNode</strong></td><td>Yes</td><td>Fast, multi-chain support.</td></tr>
+</table>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 17: SECURITY -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<h1 id="s17">17. Security Best Practices</h1>
+
+<h2>17.1 Common Smart Contract Vulnerabilities</h2>
+
+<table>
+  <tr><th>Vulnerability</th><th>Description</th><th>Prevention</th></tr>
+  <tr>
+    <td><strong>Reentrancy</strong></td>
+    <td>Attacker calls back into the contract before the first call finishes</td>
+    <td>Use the Checks-Effects-Interactions pattern; use ReentrancyGuard</td>
+  </tr>
+  <tr>
+    <td><strong>Integer Overflow</strong></td>
+    <td>Numbers wrap around (e.g., 255 + 1 = 0)</td>
+    <td>Solidity 0.8+ has built-in overflow checks</td>
+  </tr>
+  <tr>
+    <td><strong>Access Control</strong></td>
+    <td>Anyone can call admin functions</td>
+    <td>Use <code>onlyOwner</code> modifiers; use OpenZeppelin's AccessControl</td>
+  </tr>
+  <tr>
+    <td><strong>Front-Running</strong></td>
+    <td>Attackers see pending transactions and act first</td>
+    <td>Use commit-reveal schemes</td>
+  </tr>
+  <tr>
+    <td><strong>Denial of Service</strong></td>
+    <td>Contract blocked by failed external calls</td>
+    <td>Use pull-over-push pattern for payments</td>
+  </tr>
+</table>
+
+<h2>17.2 Security Checklist</h2>
+<ul>
+  <li>✅ Use the latest Solidity version (0.8.x+)</li>
+  <li>✅ Always validate inputs with <code>require()</code></li>
+  <li>✅ Use <code>onlyOwner</code> / access control modifiers</li>
+  <li>✅ Never store private keys in code or Git</li>
+  <li>✅ Use <code>.env</code> files for secrets</li>
+  <li>✅ Test thoroughly before deploying</li>
+  <li>✅ Use established libraries (OpenZeppelin)</li>
+  <li>✅ Get your contract audited before mainnet deployment</li>
+</ul>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 18: USE CASES -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<h1 id="s18">18. Real-World Use Cases</h1>
+
+<table>
+  <tr><th>Domain</th><th>Use Case</th><th>How Blockchain Helps</th></tr>
+  <tr>
+    <td><strong>Finance (DeFi)</strong></td>
+    <td>Lending, borrowing, trading without banks</td>
+    <td>Smart contracts replace intermediaries</td>
+  </tr>
+  <tr>
+    <td><strong>Supply Chain</strong></td>
+    <td>Track products from factory to store</td>
+    <td>Immutable audit trail, provenance tracking</td>
+  </tr>
+  <tr>
+    <td><strong>Healthcare</strong></td>
+    <td>Medical records shared between hospitals</td>
+    <td>Patient-controlled access, tamper-proof records</td>
+  </tr>
+  <tr>
+    <td><strong>Education</strong></td>
+    <td>Certificate verification (like CertChain!)</td>
+    <td>Instant verification, prevents fake degrees</td>
+  </tr>
+  <tr>
+    <td><strong>Voting</strong></td>
+    <td>Secure, transparent elections</td>
+    <td>Tamper-proof ballots, auditability</td>
+  </tr>
+  <tr>
+    <td><strong>Real Estate</strong></td>
+    <td>Property deeds on blockchain</td>
+    <td>Eliminates fraud, reduces paperwork</td>
+  </tr>
+  <tr>
+    <td><strong>Gaming</strong></td>
+    <td>True ownership of in-game items</td>
+    <td>NFTs for items, cross-game portability</td>
+  </tr>
+  <tr>
+    <td><strong>Identity</strong></td>
+    <td>Self-sovereign identity (SSI)</td>
+    <td>Users control their own identity data</td>
+  </tr>
+</table>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 19: CERTCHAIN PROJECT WALKTHROUGH -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<h1 id="s19">19. Complete Project Walkthrough — CertChain</h1>
+
+<p>Here's a complete walkthrough of a real blockchain project — a <strong>Certificate Verification System</strong> that combines all the technologies we've covered.</p>
+
+<h2>19.1 Project Structure</h2>
+<pre>
+CertChain/
+├── contracts/                          ← Solidity smart contracts
+│   └── CertificateVerification.sol
+├── scripts/
+│   └── deploy.js                      ← Deployment script
+├── test/
+│   └── CertificateVerification.test.js ← Contract tests
+├── hardhat.config.js                   ← Hardhat configuration
+├── frontend/                           ← Next.js web application
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── page.tsx               ← Home page
+│   │   │   ├── dashboard/page.tsx     ← Certificate dashboard
+│   │   │   ├── issue/page.tsx         ← Issue new certificates
+│   │   │   ├── verify/page.tsx        ← Verify certificates
+│   │   │   └── api/                   ← API routes
+│   │   │       ├── certificates/      ← CRUD for certificates
+│   │   │       └── verify/            ← Verification endpoint
+│   │   ├── components/
+│   │   │   ├── Navbar.tsx
+│   │   │   └── ConfirmModal.tsx
+│   │   └── lib/
+│   │       ├── blockchain.ts          ← Ethers.js helpers
+│   │       ├── ipfs.ts                ← Pinata/IPFS helpers
+│   │       └── prisma.ts             ← Database client
+│   └── prisma/
+│       └── schema.prisma             ← Database schema
+</pre>
+
+<h2>19.2 Technology Stack</h2>
+
+<div class="diagram">
+  <div class="diagram-title">CertChain Technology Stack</div>
+  <div class="diagram-row">
+    <div class="diagram-box">Next.js + React<br/><small>Frontend UI</small></div>
+    <div class="diagram-box alt">Solidity<br/><small>Smart Contract</small></div>
+    <div class="diagram-box green">Ethers.js<br/><small>Blockchain Bridge</small></div>
+  </div>
+  <div class="diagram-row" style="margin-top: 10px;">
+    <div class="diagram-box orange">MetaMask<br/><small>Wallet & Signing</small></div>
+    <div class="diagram-box purple">Pinata (IPFS)<br/><small>File Storage</small></div>
+    <div class="diagram-box">PostgreSQL<br/><small>App Database</small></div>
+  </div>
+  <div class="diagram-row" style="margin-top: 10px;">
+    <div class="diagram-box alt">Hardhat<br/><small>Dev Framework</small></div>
+    <div class="diagram-box green">Prisma ORM<br/><small>DB Access</small></div>
+    <div class="diagram-box orange">Tailwind CSS<br/><small>Styling</small></div>
+  </div>
+</div>
+
+<h2>19.3 How to Run CertChain Locally</h2>
+
+<h3>Step 1: Start the Hardhat Blockchain</h3>
+<pre>
+# Terminal 1
+npx hardhat node
+# → Starts local blockchain at http://127.0.0.1:8545
+# → Shows 20 test accounts with private keys
+</pre>
+
+<h3>Step 2: Deploy the Smart Contract</h3>
+<pre>
+# Terminal 2
+npx hardhat run scripts/deploy.js --network localhost
+# → Output: "Contract deployed to: 0x5FbDB2315678..."
+# → Copy this address to your .env file
+</pre>
+
+<h3>Step 3: Configure Environment Variables</h3>
+<pre>
+# frontend/.env
+DATABASE_URL="postgresql://user:pass@localhost:5432/certchain"
+NEXT_PUBLIC_CONTRACT_ADDRESS="0x5FbDB2315678..."
+NEXT_PUBLIC_CHAIN_RPC_URL="http://127.0.0.1:8545"
+PINATA_API_KEY="your_pinata_api_key"
+PINATA_SECRET_KEY="your_pinata_secret_key"
+NEXT_PUBLIC_IPFS_GATEWAY="https://gateway.pinata.cloud/ipfs"
+</pre>
+
+<h3>Step 4: Setup MetaMask</h3>
+<ol>
+  <li>Add Hardhat network to MetaMask (RPC URL: http://127.0.0.1:8545, Chain ID: 31337)</li>
+  <li>Import a test account private key from the Hardhat node output</li>
+</ol>
+
+<h3>Step 5: Start the Frontend</h3>
+<pre>
+# Terminal 3
+cd frontend
+npm install
+npx prisma migrate dev    # Setup database
+npm run dev               # Start at http://localhost:3000
+</pre>
+
+<h2>19.4 Complete Issue + Verify Flow</h2>
+
+<div class="diagram">
+  <div class="diagram-title">End-to-End Certificate Lifecycle</div>
+  <pre>
+  ISSUING (University):
+  ═════════════════════════════════════════════════════════════
+
+  [Fill Form] → [Upload PDF] → [API: Hash PDF + Upload to IPFS]
+                                         │
+                                         ▼
+                                [MetaMask: Sign TX]
+                                         │
+                                         ▼
+                    [Smart Contract: Store certHash + CID on-chain]
+                                         │
+                                         ▼
+                    [PostgreSQL: Save searchable record]
+                                         │
+                                         ▼
+                              ✅ Certificate Issued!
+
+
+  VERIFYING (Employer):
+  ═════════════════════════════════════════════════════════════
+
+  [Upload PDF] → [Compute keccak256 hash] → [Call contract.verify()]
+                                                      │
+                                              ┌───────┴───────┐
+                                              │               │
+                                         Hash matches    Hash doesn't
+                                         on-chain?         match
+                                              │               │
+                                         ✅ VALID        ❌ INVALID
+                                         Show details    Show warning
+  </pre>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- SECTION 20: GLOSSARY -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<h1 id="s20">20. Glossary of Key Terms</h1>
+
+<table>
+  <tr><th>Term</th><th>Definition</th></tr>
+  <tr><td><strong>ABI</strong></td><td>Application Binary Interface — JSON that describes a smart contract's functions. Used by frontends to interact with contracts.</td></tr>
+  <tr><td><strong>Address</strong></td><td>A 42-character hexadecimal identifier (e.g., 0x71C7...) representing an account on Ethereum.</td></tr>
+  <tr><td><strong>Block</strong></td><td>A batch of transactions bundled together and added to the chain.</td></tr>
+  <tr><td><strong>Bytecode</strong></td><td>The compiled machine code of a smart contract that runs on the EVM.</td></tr>
+  <tr><td><strong>CID</strong></td><td>Content Identifier — a unique hash representing a file on IPFS.</td></tr>
+  <tr><td><strong>Consensus</strong></td><td>The process by which nodes agree on the state of the blockchain.</td></tr>
+  <tr><td><strong>DApp</strong></td><td>Decentralized Application — a web app with blockchain backend.</td></tr>
+  <tr><td><strong>DeFi</strong></td><td>Decentralized Finance — financial services built on blockchain.</td></tr>
+  <tr><td><strong>Deploy</strong></td><td>Publishing a smart contract to the blockchain network.</td></tr>
+  <tr><td><strong>EOA</strong></td><td>Externally Owned Account — a regular user account controlled by a private key.</td></tr>
+  <tr><td><strong>ERC-20</strong></td><td>Standard for fungible (interchangeable) tokens on Ethereum.</td></tr>
+  <tr><td><strong>ERC-721</strong></td><td>Standard for non-fungible tokens (NFTs) on Ethereum.</td></tr>
+  <tr><td><strong>Ethers.js</strong></td><td>JavaScript library for interacting with Ethereum from web applications.</td></tr>
+  <tr><td><strong>EVM</strong></td><td>Ethereum Virtual Machine — the runtime that executes smart contract bytecode.</td></tr>
+  <tr><td><strong>Faucet</strong></td><td>A website that distributes free test ETH for development.</td></tr>
+  <tr><td><strong>Gas</strong></td><td>Unit of measurement for computational effort on Ethereum. Paid in ETH.</td></tr>
+  <tr><td><strong>Gwei</strong></td><td>A denomination of ETH. 1 Gwei = 0.000000001 ETH.</td></tr>
+  <tr><td><strong>Hardhat</strong></td><td>Development framework for building, testing, and deploying smart contracts.</td></tr>
+  <tr><td><strong>Hash</strong></td><td>A fixed-size fingerprint generated from any input data. One-way function.</td></tr>
+  <tr><td><strong>Immutable</strong></td><td>Cannot be changed or deleted once written.</td></tr>
+  <tr><td><strong>IPFS</strong></td><td>InterPlanetary File System — decentralized, content-addressed file storage.</td></tr>
+  <tr><td><strong>Keccak256</strong></td><td>The hash function used by Ethereum (variant of SHA-3).</td></tr>
+  <tr><td><strong>Mainnet</strong></td><td>The real, production Ethereum network where real money is used.</td></tr>
+  <tr><td><strong>Mempool</strong></td><td>The waiting area for unconfirmed transactions.</td></tr>
+  <tr><td><strong>Merkle Tree</strong></td><td>A tree structure of hashes used to efficiently verify data integrity in blocks.</td></tr>
+  <tr><td><strong>MetaMask</strong></td><td>Browser extension wallet for managing Ethereum accounts and signing transactions.</td></tr>
+  <tr><td><strong>Mining</strong></td><td>The process of solving puzzles to create new blocks (PoW).</td></tr>
+  <tr><td><strong>Modifier</strong></td><td>Reusable access control code in Solidity (e.g., <code>onlyOwner</code>).</td></tr>
+  <tr><td><strong>NFT</strong></td><td>Non-Fungible Token — a unique digital asset on blockchain.</td></tr>
+  <tr><td><strong>Node</strong></td><td>A computer running blockchain software, storing and validating the chain.</td></tr>
+  <tr><td><strong>Nonce</strong></td><td>A number used once — in transactions, prevents replay attacks.</td></tr>
+  <tr><td><strong>Oracle</strong></td><td>A service that provides real-world data to smart contracts (e.g., Chainlink).</td></tr>
+  <tr><td><strong>P2P</strong></td><td>Peer-to-Peer — a network where nodes communicate directly without a central server.</td></tr>
+  <tr><td><strong>Pinata</strong></td><td>A service that hosts and pins files on IPFS permanently.</td></tr>
+  <tr><td><strong>PoS</strong></td><td>Proof of Stake — consensus mechanism where validators stake cryptocurrency.</td></tr>
+  <tr><td><strong>PoW</strong></td><td>Proof of Work — consensus mechanism using computational puzzles.</td></tr>
+  <tr><td><strong>Private Key</strong></td><td>Secret key that controls your account. Never share it!</td></tr>
+  <tr><td><strong>Provider</strong></td><td>An Ethers.js connection to a blockchain node for reading data.</td></tr>
+  <tr><td><strong>Public Key</strong></td><td>Derived from private key. Used to verify signatures. Safe to share.</td></tr>
+  <tr><td><strong>RPC</strong></td><td>Remote Procedure Call — protocol for communicating with blockchain nodes.</td></tr>
+  <tr><td><strong>Seed Phrase</strong></td><td>12/24-word recovery phrase that generates all your private keys.</td></tr>
+  <tr><td><strong>Signer</strong></td><td>An Ethers.js object that can sign and send transactions (connected to a wallet).</td></tr>
+  <tr><td><strong>Slashing</strong></td><td>Penalty in PoS where a dishonest validator loses staked funds.</td></tr>
+  <tr><td><strong>Smart Contract</strong></td><td>Self-executing program stored and running on the blockchain.</td></tr>
+  <tr><td><strong>Solidity</strong></td><td>The primary programming language for Ethereum smart contracts.</td></tr>
+  <tr><td><strong>Staking</strong></td><td>Locking up cryptocurrency to participate in PoS validation.</td></tr>
+  <tr><td><strong>Testnet</strong></td><td>A test blockchain network using fake ETH for development.</td></tr>
+  <tr><td><strong>Transaction</strong></td><td>Any action recorded on the blockchain (transfer, contract call, etc.).</td></tr>
+  <tr><td><strong>Wallet</strong></td><td>Software that manages your private keys and lets you interact with blockchain.</td></tr>
+  <tr><td><strong>Wei</strong></td><td>The smallest unit of ETH. 1 ETH = 10¹⁸ Wei.</td></tr>
+</table>
+
+<hr/>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- QUICK REFERENCE CHEAT SHEET -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<h1>Quick Reference — Cheat Sheet</h1>
+
+<h2>Essential Commands</h2>
+<pre>
+# Start local blockchain
+npx hardhat node
+
+# Compile smart contracts
+npx hardhat compile
+
+# Run tests
+npx hardhat test
+
+# Deploy to local network
+npx hardhat run scripts/deploy.js --network localhost
+
+# Deploy to Sepolia testnet
+npx hardhat run scripts/deploy.js --network sepolia
+
+# Setup database (Prisma)
+npx prisma migrate dev
+npx prisma generate
+
+# Start Next.js frontend
+cd frontend && npm run dev
+</pre>
+
+<h2>Key Ethereum Units</h2>
+<pre>
+1 ETH    = 1,000,000,000 Gwei    = 1,000,000,000,000,000,000 Wei
+1 Gwei   = 0.000000001 ETH      = 1,000,000,000 Wei
+1 Wei    = 0.000000000000000001 ETH (smallest unit)
+</pre>
+
+<h2>Important Addresses Format</h2>
+<pre>
+Ethereum Address:  0x71C7656EC7ab88b098defB751B7401B5f6d8976F  (42 chars)
+Transaction Hash:  0x88df016429689c079f3b2f6ad39fa052532c56795b733da78a91ebe6a713944b  (66 chars)
+</pre>
+
+<hr/>
+
+<footer>
+  <p><strong>Blockchain Technology — Complete Learning Guide</strong></p>
+  <p>Prepared for Campus Learning &bull; March 2026</p>
+  <p>Covers: Blockchain Fundamentals, Ethereum, Solidity, Hardhat, MetaMask, IPFS, Web3, DApp Architecture</p>
+  <p style="margin-top:15px; font-size:11px; color:#bbb;">
+    To save as PDF: Open this file in your browser → Press Ctrl+P (or Cmd+P on Mac) → Select "Save as PDF" → Click Save
+  </p>
+</footer>
+
+</body>
+</html>
